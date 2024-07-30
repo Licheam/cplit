@@ -56,7 +56,7 @@ checksum = "7a66a03ae7c801facd77a29370b4faec201768915ac14a721ba36f20bc9c209b"
 [[package]]
 name = "rust-bundler"
 version = "0.1.0"
-source = "git+https://github.com/Licheam/rust-bundler.git#0be87d782c5f6aebd524017fb5e546c5dcf94340"
+source = "git+https://github.com/Licheam/rust-bundler.git#bea0dcc17cf1698f295406789b10a35048053d04"
 dependencies = [
  "regex",
 ]
