@@ -6,7 +6,7 @@
 //!
 //! fn main() {
 //!     let (a, b): (usize, usize);
-//!     scanln!("{}, {}", a, b);
+//!     scanln!(a, b);
 //!     println!("{}", a + b);
 //! }
 //! ```
