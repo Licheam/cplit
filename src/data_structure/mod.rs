@@ -4,7 +4,7 @@
 //!
 //! For now, the following data structures are available:
 //!
-//! [`DisjointSetUnion`], [`SegmentTree`], [BinaryIndexedTree]
+//! [`DisjointSetUnion`], [`SegmentTree`], [`BinaryIndexedTree`]
 
 pub mod binary_indexed_tree;
 pub mod disjoint_set_union;
