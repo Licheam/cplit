@@ -7,8 +7,8 @@ pub struct BinaryIndexedTree {
 impl BinaryIndexedTree {
     pub fn new(n: usize) -> Self {
         Self {
-            b: vec![0; n+1],
-            n
+            b: vec![0; n + 1],
+            n,
         }
     }
 
@@ -37,12 +37,12 @@ impl BinaryIndexedTree {
     pub fn build(&mut self, a: &Vec<isize>) {
         let BinaryIndexedTree { b, n } = self;
         for i in 1..=*n {
-            b[i] = a[i-1];
+            b[i] = a[i - 1];
         }
         let mut x = 1;
         while x << 1 <= *n {
-            for i in (x..=*n-x).step_by(x << 1) {
-                b[i+x] += b[i];
+            for i in (x..=*n - x).step_by(x << 1) {
+                b[i + x] += b[i];
             }
             x <<= 1;
         }

@@ -1,5 +1,5 @@
 //! # Competitive Programming Library
-//! 
+//!
 //! Example:
 //! ```rust
 //! use cplit::scanln;
@@ -12,5 +12,6 @@
 //! ```
 
 pub mod data_structure;
-
+pub mod graph;
 mod io;
+pub mod num;
