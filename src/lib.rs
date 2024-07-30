@@ -1,7 +1,7 @@
 //! # Competitive Programming Library
 //!
 //! Example:
-//! ```rust
+//! ```no_run
 //! use cplit::scanln;
 //!
 //! fn main() {

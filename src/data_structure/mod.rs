@@ -1,6 +1,6 @@
-//! Data structures.
+//! Data Structures
 //!
-//! This module contains data structures that are useful in competitive programming.
+//! This module contains data structures.
 //!
 //! For now, the following data structures are available:
 //!
