@@ -1,12 +1,12 @@
 //! Numeric traits for generic algorithms.
 //!
 //!
-use core::cmp::{Eq, Ord, PartialEq, PartialOrd};
-use core::ops::{Add, Div, Mul, Rem, Sub};
-use core::ops::{AddAssign, DivAssign, MulAssign, RemAssign, SubAssign};
+use std::cmp::{Eq, Ord, PartialEq, PartialOrd};
+use std::ops::{Add, Div, Mul, Rem, Sub};
+use std::ops::{AddAssign, DivAssign, MulAssign, RemAssign, SubAssign};
 pub mod bounds;
 #[doc(inline)]
-pub use bounds::{Bounded, LowerBounded, UpperBounded};
+pub use self::bounds::{Bounded, LowerBounded, UpperBounded};
 
 /// The base trait for numeric types
 pub trait Numeric: Default + Copy + Clone + PartialEq + Zero + One {}
