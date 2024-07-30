@@ -42,7 +42,6 @@ macro_rules! fscanln {
     };
 }
 
-
 #[macro_export]
 macro_rules! scanln {
     ($($i:expr), +) => {

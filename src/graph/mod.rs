@@ -1,16 +1,16 @@
 //! # Graph Theory
-//! 
+//!
 //! This module contains graph algorithms.
-//! 
+//!
 //! All graph algorithms are implemented for the following graph representation: [`Graph`],
 //! which is a simple graph representation using adjacency list.
-//! 
+//!
 //! For example, the following code snippet demonstrates how to use the Dijkstra algorithm:
-//! 
+//!
 //! ```no_run
 //! use cplit::graph::{dijkstra, Graph};
 //! use cplit::scanln;
-//! 
+//!
 //! fn main() {
 //!     let (n, m, s): (usize, usize, usize);
 //!     scanln!(n, m, s);
