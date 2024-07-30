@@ -1,6 +1,7 @@
 //! # Competitive Programming Library
 //!
-//! Example:
+//! # Examples
+//! 
 //! ```no_run
 //! use cplit::scanln;
 //!

@@ -1,6 +1,7 @@
 #[macro_export]
 macro_rules! fscanln {
     ($reader:expr, $($i:expr), +) => {
+        #[allow(unused_imports)]
         use std::io::BufRead;
         let mut iter = std::iter::repeat_with(|| {
             let mut buf = String::new();
@@ -16,6 +17,7 @@ macro_rules! fscanln {
     };
 
     ($reader:expr, $coll:expr ; $n:expr) => {
+        #[allow(unused_imports)]
         use std::io::BufRead;
         $coll = std::iter::once(Default::default())
                 .chain(
@@ -33,6 +35,7 @@ macro_rules! fscanln {
     };
 
     ($reader:expr, $coll:expr ;) => {
+        #[allow(unused_imports)]
         use std::io::BufRead;
         let mut buf = String::new();
         $reader.read_line(&mut buf).unwrap();
