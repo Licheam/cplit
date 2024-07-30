@@ -1,19 +1,4 @@
 #[macro_export]
-macro_rules! scanln {
-    ($($i:expr), +) => {
-        fscanln!(std::io::stdin(), $($i), +);
-    };
-
-    ($coll:expr ; $n:expr) => {
-        fscanln!(std::io::stdin(), $coll ; $n);
-    };
-
-    ($coll:expr ;) => {
-        fscanln!(std::io::stdin(), $coll ;);
-    };
-}
-
-#[macro_export]
 macro_rules! fscanln {
     ($reader:expr, $($i:expr), +) => {
         use std::io::BufRead;
@@ -54,5 +39,20 @@ macro_rules! fscanln {
         $coll = std::iter::once(Default::default())
                 .chain(buf.split_whitespace().map(|x| x.parse().unwrap()))
                 .collect();
+    };
+}
+
+#[macro_export]
+macro_rules! scanln {
+    ($($i:expr), +) => {
+        $crate::fscanln!(std::io::stdin(), $($i), +);
+    };
+
+    ($coll:expr ; $n:expr) => {
+        $crate::fscanln!(std::io::stdin(), $coll ; $n);
+    };
+
+    ($coll:expr ;) => {
+        $crate::fscanln!(std::io::stdin(), $coll ;);
     };
 }

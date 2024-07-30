@@ -1,10 +1,10 @@
-//! Data structures.
+//! Data Structures
 //!
-//! This module contains data structures that are useful in competitive programming.
+//! This module contains data structures.
 //!
 //! For now, the following data structures are available:
 //!
-//! [`DisjointSetUnion`], [`SegmentTree`], [BinaryIndexedTree]
+//! [`DisjointSetUnion`], [`SegmentTree`], [`BinaryIndexedTree`]
 
 pub mod binary_indexed_tree;
 pub mod disjoint_set_union;

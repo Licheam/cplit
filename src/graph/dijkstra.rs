@@ -34,7 +34,11 @@ where
 #[cfg(test)]
 mod tests {
     use crate::fscanln;
+<<<<<<< HEAD
     use crate::graph::{Graph, dijkstra};
+=======
+    use crate::graph::{dijkstra, Graph};
+>>>>>>> dev
     use std::io::{BufReader, Cursor};
 
     #[test]
