@@ -34,7 +34,7 @@ where
 #[cfg(test)]
 mod tests {
     use crate::fscanln;
-    use crate::graph::Graph;
+    use crate::graph::{Graph, dijkstra};
     use std::io::{BufReader, Cursor};
 
     #[test]
@@ -58,7 +58,7 @@ mod tests {
             fscanln!(reader, u, v, w);
             graph.add_edge(u, v, w);
         }
-        let dist = crate::graph::dijkstra(s, &graph);
+        let dist = dijkstra(s, &graph);
         assert_eq!(dist[1..], vec![0, 2, 4, 3]);
     }
 }

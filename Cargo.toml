@@ -11,7 +11,7 @@ edition = "2021"
 build = "build.rs"
 
 [build-dependencies]
-rust-bundler = { git = "https://github.com/rqdmap/rust-bundler.git" }
+rust-bundler = { git = "https://github.com/Licheam/rust-bundler.git" }
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
