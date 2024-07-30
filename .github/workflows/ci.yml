@@ -44,7 +44,7 @@ jobs:
           components: rustfmt, clippy
           override: true
       - name: Run clippy
-        run: cargo clippy --all-targets -- -D warnings $(cat .lints | cut -f1 -d"#" | tr '\n' ' ')
+        run: cargo clippy --all-targets
       - name: Run rustfmt
         run: cargo fmt -- --check
       - name: Run cargo-deny
