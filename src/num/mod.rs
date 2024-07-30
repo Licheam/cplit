@@ -5,6 +5,7 @@ use core::cmp::{Eq, Ord, PartialEq, PartialOrd};
 use core::ops::{Add, Div, Mul, Rem, Sub};
 use core::ops::{AddAssign, DivAssign, MulAssign, RemAssign, SubAssign};
 pub mod bounds;
+pub use bounds::{Bounded, LowerBounded, UpperBounded};
 
 /// The base trait for numeric types
 pub trait Numeric: Default + Copy + Clone + PartialEq + Zero + One {}
