@@ -1,5 +1,6 @@
 use super::Distance;
 use crate::num::{bounds::UpperBounded, Numeric, NumericAssOps, NumericCmpOps, NumericOps};
+use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 
 // Find the shortest path from the source node to all other nodes in the graph.
@@ -14,8 +15,8 @@ where
     let mut visited = vec![false; n + 1];
     dist[source] = N::ZERO;
     let mut pq = BinaryHeap::new();
-    pq.push((N::ZERO, source));
-    while let Some((d, u)) = pq.pop() {
+    pq.push((Reverse(N::ZERO), source));
+    while let Some((_, u)) = pq.pop() {
         if visited[u] {
             continue;
         }
@@ -23,7 +24,7 @@ where
         for (v, e) in &graph.edges[u] {
             if dist[*v] > dist[u] + e.dist() {
                 dist[*v] = dist[u] + e.dist();
-                pq.push((dist[*v], *v));
+                pq.push((Reverse(dist[*v]), *v));
             }
         }
     }
@@ -32,13 +33,12 @@ where
 
 #[cfg(test)]
 mod tests {
-    use std::io::{Cursor, BufReader};
-
     use crate::fscanln;
     use crate::graph::Graph;
+    use std::io::{BufReader, Cursor};
 
     #[test]
-    fn luogu_P4779() {
+    fn luogu_p4779() {
         let mut reader = BufReader::new(Cursor::new(
             r#"
 4 6 1
