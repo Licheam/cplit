@@ -3,9 +3,8 @@ use crate::num::{Numeric, NumericAssOps, NumericCmpOps, NumericOps};
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 
-
 /// Dijkstra - Finding shortest paths from given vertex
-/// 
+///
 /// For more information, see [Dijkstra algorithm](https://cp-algorithms.com/graph/dijkstra.html)
 /// - Input:
 ///     - `source` - the source vertex

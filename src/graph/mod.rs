@@ -29,7 +29,7 @@
 //! ```
 
 /// Graph representation using adjacency list.
-/// 
+///
 /// `V` is the information stored in each node, and `E` is the information stored in each edge.
 pub struct Graph<V, E>
 where
