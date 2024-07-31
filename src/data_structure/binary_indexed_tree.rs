@@ -40,10 +40,8 @@ where
         s
     }
 
-    pub fn build(&mut self, a: &Vec<N>) {
-        for i in 1..=self.n {
-            self.b[i] = a[i - 1];
-        }
+    pub fn build(&mut self, a: &[N]) {
+        self.b[1..=self.n].copy_from_slice(&a[0..self.n]);
         let mut x = 1;
         while x << 1 <= self.n {
             for i in (x..=self.n - x).step_by(x << 1) {

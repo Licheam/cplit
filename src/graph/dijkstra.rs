@@ -1,19 +1,26 @@
 use super::Distance;
-use crate::num::{bounds::UpperBounded, Numeric, NumericAssOps, NumericCmpOps, NumericOps};
+use crate::num::{Numeric, NumericAssOps, NumericCmpOps, NumericOps};
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 
-// Find the shortest path from the source node to all other nodes in the graph.
-pub fn dijkstra<V, E, N>(source: usize, graph: &super::Graph<V, E>) -> Vec<N>
+/// Dijkstra - Finding shortest paths from given vertex
+///
+/// For more information, see [Dijkstra algorithm](https://cp-algorithms.com/graph/dijkstra.html)
+/// - Input:
+///     - `source` - the source vertex
+///     - `graph` - the graph with **positive** distance on edges
+/// - Output:
+///     - A vector of optional distances from the source vertex to each vertex
+pub fn dijkstra<V, E, N>(source: usize, graph: &super::Graph<V, E>) -> Vec<Option<N>>
 where
-    N: Numeric + UpperBounded + NumericOps + NumericCmpOps + NumericAssOps,
+    N: Numeric + NumericOps + NumericCmpOps + NumericAssOps,
     V: Default + Clone,
     E: Clone + Distance<N>,
 {
     let n = graph.nodes.len() - 1;
-    let mut dist = vec![N::MAX; n + 1];
+    let mut dist = vec![None; n + 1];
     let mut visited = vec![false; n + 1];
-    dist[source] = N::ZERO;
+    dist[source] = Some(N::ZERO);
     let mut pq = BinaryHeap::new();
     pq.push((Reverse(N::ZERO), source));
     while let Some((_, u)) = pq.pop() {
@@ -22,9 +29,9 @@ where
         }
         visited[u] = true;
         for (v, e) in &graph.edges[u] {
-            if dist[*v] > dist[u] + e.dist() {
-                dist[*v] = dist[u] + e.dist();
-                pq.push((Reverse(dist[*v]), *v));
+            if dist[*v].map_or(true, |distv| distv > dist[u].unwrap() + e.dist()) {
+                dist[*v] = Some(dist[u].unwrap() + e.dist());
+                pq.push((Reverse(dist[*v].unwrap()), *v));
             }
         }
     }
@@ -59,6 +66,9 @@ mod tests {
             graph.add_edge(u, v, w);
         }
         let dist = dijkstra(s, &graph);
-        assert_eq!(dist[1..], vec![0, 2, 4, 3]);
+        assert_eq!(
+            dist[1..],
+            vec![0, 2, 4, 3].into_iter().map(Some).collect::<Vec<_>>()
+        );
     }
 }
