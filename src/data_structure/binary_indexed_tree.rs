@@ -40,7 +40,7 @@ where
         s
     }
 
-    pub fn build(&mut self, a: &Vec<N>) {
+    pub fn build(&mut self, a: &[N]) {
         for i in 1..=self.n {
             self.b[i] = a[i - 1];
         }

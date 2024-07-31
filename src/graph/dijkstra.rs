@@ -3,7 +3,15 @@ use crate::num::{Numeric, NumericAssOps, NumericCmpOps, NumericOps};
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 
-// Find the shortest path from the source node to all other nodes in the graph.
+
+/// Dijkstra - Finding shortest paths from given vertex
+/// 
+/// For more information, see [Dijkstra algorithm](https://cp-algorithms.com/graph/dijkstra.html)
+/// - Input:
+///     - `source` - the source vertex
+///     - `graph` - the graph with **positive** distance on edges
+/// - Output:
+///     - A vector of optional distances from the source vertex to each vertex
 pub fn dijkstra<V, E, N>(source: usize, graph: &super::Graph<V, E>) -> Vec<Option<N>>
 where
     N: Numeric + NumericOps + NumericCmpOps + NumericAssOps,
