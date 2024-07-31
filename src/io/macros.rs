@@ -48,17 +48,7 @@ macro_rules! fscanln {
 #[macro_export]
 macro_rules! scanln {
     ($($i:expr), +) => {
-        let mut iter = std::iter::repeat_with(|| {
-            let mut buf = String::new();
-            std::io::stdin().read_line(&mut buf).unwrap();
-            buf.split_whitespace()
-                .map(|x| x.parse().unwrap())
-                .collect::<Vec<_>>()
-        })
-        .flatten();
-        $(
-            $i = iter.next().unwrap();
-        )*
+        $crate::fscanln!(std::io::stdin(), $($i), +);
     };
 
     ($coll:expr ; $n:expr) => {
