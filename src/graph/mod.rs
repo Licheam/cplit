@@ -19,6 +19,7 @@
 //!     // and a usize in each edge as weight.
 //!     let mut graph = Graph::<(), usize>::new(n);
 //!     for _ in 0..m {
+//!         // Read an edge u->v with weight w.
 //!         let (u, v, w): (usize, usize, usize);
 //!         scanln!(u, v, w);
 //!         // Create an edge u->v with weight w.
