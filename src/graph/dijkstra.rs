@@ -1,5 +1,5 @@
 use super::Distance;
-use crate::num::{bounds::UpperBounded, Numeric, NumericAssOps, NumericCmpOps, NumericOps};
+use crate::num::{Numeric, NumericAssOps, NumericCmpOps, NumericOps};
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 
