@@ -1,5 +1,4 @@
 use crate::num::{Numeric, NumericAssOps, NumericOps};
-use std::collections::binary_heap::Iter;
 use std::iter::successors;
 use std::ops::{Bound, RangeBounds};
 
