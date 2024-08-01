@@ -27,9 +27,9 @@ where
     N: Numeric + NumericOps + NumericAssOps + Clone + Copy,
 {
     /// Constructs a new binary indexed tree with the specified `len` with each element set as N::ZERO.
-    pub fn with_len(n: usize) -> Self {
+    pub fn with_capacity(capacity: usize) -> Self {
         Self {
-            body: vec![N::ZERO; n + 1],
+            body: vec![N::ZERO; capacity + 1],
         }
     }
 
@@ -53,6 +53,7 @@ where
         }
     }
 
+    /// Returns the sum of the elements in the range `bounds`.
     pub fn sum(&self, bounds: impl RangeBounds<usize>) -> N {
         let mut start = match bounds.start_bound() {
             Bound::Included(&s) => s,
@@ -92,6 +93,7 @@ where
         s
     }
 
+    // Initializes the binary indexed tree.
     fn init(&mut self) {
         let len = self.len();
         successors(Some(1), |&step| Some(step << 1))
