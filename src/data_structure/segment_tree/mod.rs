@@ -1,6 +1,6 @@
 pub mod ops;
 #[doc(inline)]
-pub use ops::{Operation, OperationPair, Sum};
+pub use self::ops::{Operation, OperationPair, Sum};
 
 use crate::num::{Numeric, NumericAssOps, NumericOps, Zero};
 use std::fmt::Debug;

@@ -1,6 +1,7 @@
 use crate::num::{Numeric, NumericOps, Zero};
 use std::fmt::Debug;
 use std::marker::PhantomData;
+use std::convert::TryFrom;
 
 pub trait Operation<N>
 where
