@@ -42,6 +42,11 @@ where
         self.body.len() - 1
     }
 
+    /// Returns `true` if the binary indexed tree is empty.
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
     /// Updates the value of the element at `index` by adding `delta`.
     /// Complexity: _O(log n)_.
     pub fn add(&mut self, mut index: usize, delta: N) {
@@ -137,6 +142,15 @@ where
         let mut bit = BinaryIndexedTree { body: a.into() };
         bit.init();
         bit
+    }
+}
+
+impl<N> Default for BinaryIndexedTree<N>
+where
+    N: Numeric + NumericOps + NumericAssOps + Clone + Copy,
+{
+    fn default() -> Self {
+        Self::new()
     }
 }
 

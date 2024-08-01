@@ -30,6 +30,10 @@ where
         self.len
     }
 
+    pub fn is_empty(&self) -> bool {
+        self.len == 0
+    }
+
     fn pushup(&mut self, x: usize) {
         self.buf[x] = O::COMBINE(self.buf[x << 1], self.buf[x << 1 | 1]);
     }
