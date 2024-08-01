@@ -7,7 +7,7 @@ use std::fmt::Debug;
 use std::marker::PhantomData;
 
 /// Segment tree for range queries and point updates. (Quite early version, certain interfaces may be revised.)
-/// 
+///
 /// For more information, see [Segment tree](https://cp-algorithms.com/data_structures/segment_tree.html).
 #[derive(Debug)]
 pub struct SegmentTree<N, O>

@@ -83,7 +83,6 @@ one_trait_impl!(One for usize u8 u16 u32 u64 u128);
 one_trait_impl!(One for isize i8 i16 i32 i64 i128);
 one_trait_impl!(One for f32 f64);
 
-
 macro_rules! tuple_zero_impl {
     ( $( $name:ident )+ ) => {
         impl<$($name: Zero),+> Zero for ($($name,)+)
