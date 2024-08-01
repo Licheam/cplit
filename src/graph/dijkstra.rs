@@ -13,7 +13,7 @@ use std::collections::BinaryHeap;
 ///     - A vector of optional distances from the source vertex to each vertex
 pub fn dijkstra<V, E, N>(source: usize, graph: &super::Graph<V, E>) -> Vec<Option<N>>
 where
-    N: Numeric + NumericOps + NumericCmpOps + NumericAssOps,
+    N: Numeric + NumericOps + NumericCmpOps + NumericAssOps + Clone + Copy,
     V: Default + Clone,
     E: Clone + Distance<N>,
 {
