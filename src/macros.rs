@@ -16,6 +16,28 @@ macro_rules! fscanln {
         )*
     }};
 
+    ( $reader:expr, $($i:expr), +, ?) => {{
+        #[allow(unused_imports)]
+        use std::io::BufRead;
+        let mut iter = std::iter::repeat_with(|| {
+            let mut buf = String::new();
+            $reader.read_line(&mut buf).unwrap();
+            buf.split_whitespace()
+                .map(|x| x.to_string())
+                .collect::<Vec<_>>()
+        })
+        .find(|x| !x.is_empty())
+        .unwrap()
+        .into_iter();
+        $(
+            if let Some(val) = iter.next() {
+                $i = val.parse().unwrap();
+            } else {
+                $i = Default::default();
+            }
+        )*
+    }};
+
     ($reader:expr, $coll:expr ; $n:expr) => {{
         #[allow(unused_imports)]
         use std::io::BufRead;
@@ -48,14 +70,18 @@ macro_rules! fscanln {
 #[macro_export]
 macro_rules! scanln {
     ($($i:expr), +) => {
-        $crate::fscanln!(std::io::stdin(), $($i), +);
+        fscanln!(std::io::stdin(), $($i), +);
+    };
+
+    ($($i:expr), +, ?) => {
+        fscanln!(std::io::stdin(), $($i), +, ?);
     };
 
     ($coll:expr ; $n:expr) => {
-        $crate::fscanln!(std::io::stdin(), $coll ; $n);
+        fscanln!(std::io::stdin(), $coll ; $n);
     };
 
     ($coll:expr ;) => {
-        $crate::fscanln!(std::io::stdin(), $coll ;);
+        fscanln!(std::io::stdin(), $coll ;);
     };
 }

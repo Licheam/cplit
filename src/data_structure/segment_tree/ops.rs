@@ -1,11 +1,10 @@
-use std::marker::PhantomData;
+use crate::num::{Numeric, NumericAssOps, NumericOps, Zero};
 use std::fmt::Debug;
-use crate::num::{Numeric, NumericAssOps, NumericOps};
+use std::marker::PhantomData;
 
 pub trait Operation<N>
 where
-    N: Numeric + NumericOps + NumericAssOps + Clone + Copy + TryFrom<usize>,
-    <N as TryFrom<usize>>::Error: Debug,
+    N: Zero + Clone + Copy,
 {
     /// Combines two values from left and right child.
     const COMBINE: fn(left_child: N, right_child: N) -> N;
@@ -19,20 +18,19 @@ pub struct Sum;
 
 impl<N> Operation<N> for Sum
 where
-    N: Numeric + NumericOps + NumericAssOps + Clone + Copy + TryFrom<usize>,
+    N: Numeric + NumericOps + Clone + Copy + TryFrom<usize>,
     <N as TryFrom<usize>>::Error: Debug,
 {
     const COMBINE: fn(N, N) -> N = |left_child, right_child| left_child + right_child;
-    const PUSH_BUF: fn(N, N, usize) -> N = |child, tag, len| child + tag * N::try_from(len).unwrap();
+    const PUSH_BUF: fn(N, N, usize) -> N =
+        |child, tag, len| child + tag * N::try_from(len).unwrap();
     const PUSH_TAG: fn(N, N) -> N = |child_tag, tag| child_tag + tag;
 }
 
 pub struct OperationPair<N1, N2, O1, O2>
 where
-    N1: Numeric + NumericOps + NumericAssOps + Clone + Copy + TryFrom<usize>,
-    N2: Numeric + NumericOps + NumericAssOps + Clone + Copy + TryFrom<usize>,
-    <N1 as TryFrom<usize>>::Error: Debug,
-    <N2 as TryFrom<usize>>::Error: Debug,
+    N1: Zero + Clone + Copy,
+    N2: Zero + Clone + Copy,
     O1: Operation<N1>,
     O2: Operation<N2>,
 {
@@ -46,10 +44,8 @@ where
 
 impl<N1, N2, O1, O2> Operation<(N1, N2)> for OperationPair<N1, N2, O1, O2>
 where
-    N1: Numeric + NumericOps + NumericAssOps + Clone + Copy + TryFrom<usize>,
-    N2: Numeric + NumericOps + NumericAssOps + Clone + Copy + TryFrom<usize>,
-    <N1 as TryFrom<usize>>::Error: Debug,
-    <N2 as TryFrom<usize>>::Error: Debug,
+    N1: Zero + Clone + Copy,
+    N2: Zero + Clone + Copy,
     O1: Operation<N1>,
     O2: Operation<N2>,
 {
