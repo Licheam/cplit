@@ -1,7 +1,7 @@
 //! # Competitive Programming Library
 //!
 //! This library aims to provide a set of algorithm, data structure and tools for competitive programming.
-//! 
+//!
 //! There are several philosophies behind this library:
 //! - **Simple**: The library should be simple and fast to use, as time is precious in competitive programming.
 //!     - Do not overuse Option, Result to provide unnecessary boundary checks (panic is fine).
@@ -13,7 +13,7 @@
 //! - **Indexed from _1_**: The library should use 1-based index for most of the algorithms and data structures while leaving the index 0 for buffer manipulation.
 //!     - This is because most of the problem use 1-based index.
 //!     - Index 0 should default be set to ZERO.
-//! 
+//!
 //!
 //! ## Examples
 //!
