@@ -7,12 +7,12 @@ macro_rules! fscanln {
             let mut buf = String::new();
             $reader.read_line(&mut buf).unwrap();
             buf.split_whitespace()
-                .map(|x| x.parse().unwrap())
+                .map(|x| x.to_string())
                 .collect::<Vec<_>>()
         })
         .flatten();
         $(
-            $i = iter.next().unwrap();
+            $i = iter.next().unwrap().parse().unwrap();
         )*
     }};
 
