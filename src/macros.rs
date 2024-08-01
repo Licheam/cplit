@@ -70,18 +70,18 @@ macro_rules! fscanln {
 #[macro_export]
 macro_rules! scanln {
     ($($i:expr), +) => {
-        fscanln!(std::io::stdin(), $($i), +);
+        $crate::fscanln!(std::io::stdin(), $($i), +);
     };
 
     ($($i:expr), +, ?) => {
-        fscanln!(std::io::stdin(), $($i), +, ?);
+        $crate::fscanln!(std::io::stdin(), $($i), +, ?);
     };
 
     ($coll:expr ; $n:expr) => {
-        fscanln!(std::io::stdin(), $coll ; $n);
+        $crate::fscanln!(std::io::stdin(), $coll ; $n);
     };
 
     ($coll:expr ;) => {
-        fscanln!(std::io::stdin(), $coll ;);
+        $crate::fscanln!(std::io::stdin(), $coll ;);
     };
 }
