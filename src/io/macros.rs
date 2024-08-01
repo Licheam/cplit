@@ -52,10 +52,10 @@ macro_rules! scanln {
     };
 
     ($coll:expr ; $n:expr) => {
-        $crate::fscanln!(std::io::stdin(), $($i), +);
+        $crate::fscanln!(std::io::stdin(), $coll ; $n);
     };
 
     ($coll:expr ;) => {
-        $crate::fscanln!(std::io::stdin(), $($i), +);
+        $crate::fscanln!(std::io::stdin(), $coll ;);
     };
 }
