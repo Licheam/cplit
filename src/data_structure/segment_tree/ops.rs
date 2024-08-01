@@ -1,4 +1,4 @@
-use crate::num::{Numeric, NumericAssOps, NumericOps, Zero};
+use crate::num::{Numeric, NumericOps, Zero};
 use std::fmt::Debug;
 use std::marker::PhantomData;
 
@@ -34,7 +34,7 @@ where
     O1: Operation<N1>,
     O2: Operation<N2>,
 {
-    phantoms: (
+    _phantoms: (
         PhantomData<N1>,
         PhantomData<N2>,
         PhantomData<O1>,
