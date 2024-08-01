@@ -1,4 +1,4 @@
-//! Numeric traits for generic algorithms.
+//! Numeric Traits
 //!
 //!
 use std::cmp::{Eq, Ord, PartialEq, PartialOrd};
@@ -9,9 +9,9 @@ pub mod bounds;
 pub use self::bounds::{Bounded, LowerBounded, UpperBounded};
 
 /// The base trait for numeric types
-pub trait Numeric: Default + Copy + Clone + Zero + One {}
+pub trait Numeric: Default + Zero + One {}
 
-impl<T> Numeric for T where T: Default + Copy + Clone + Zero + One {}
+impl<T> Numeric for T where T: Default + Zero + One {}
 
 /// Generic trait for types implementing basic numeric operations
 ///
@@ -82,3 +82,25 @@ macro_rules! one_trait_impl {
 one_trait_impl!(One for usize u8 u16 u32 u64 u128);
 one_trait_impl!(One for isize i8 i16 i32 i64 i128);
 one_trait_impl!(One for f32 f64);
+
+macro_rules! tuple_zero_impl {
+    ( $( $name:ident )+ ) => {
+        impl<$($name: Zero),+> Zero for ($($name,)+)
+        {
+            const ZERO: Self = ($($name::ZERO,)+);
+        }
+    };
+}
+
+tuple_zero_impl!(A B);
+
+macro_rules! tuple_one_impl {
+    ( $( $name:ident )+ ) => {
+        impl<$($name: One),+> One for ($($name,)+)
+        {
+            const ONE: Self = ($($name::ONE,)+);
+        }
+    };
+}
+
+tuple_one_impl!(A B);
