@@ -41,7 +41,7 @@ where
 
     /// Updates the value of the element at index `idx` by adding `delta`.
     pub fn add(&mut self, mut idx: usize, delta: N) {
-        if (1..=self.len()).contains(&idx) {
+        if !(1..=self.len()).contains(&idx) {
             panic!(
                 "Index out of bounds: the range is 1..={} but the index is {}",
                 self.len(),
