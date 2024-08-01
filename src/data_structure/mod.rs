@@ -15,4 +15,4 @@ pub use self::binary_indexed_tree::BinaryIndexedTree;
 #[doc(inline)]
 pub use self::disjoint_set_union::DisjointSetUnion;
 #[doc(inline)]
-pub use self::segment_tree::SegmentTree;
+pub use self::segment_tree::{SegmentTree, Operation, OperationPair, Sum};
