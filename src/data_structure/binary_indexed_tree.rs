@@ -1,10 +1,10 @@
 use crate::num::{Numeric, NumericAssOps, NumericOps};
-use std::iter::successors;
 use std::ops::{Bound, RangeBounds};
+use std::vec;
 
 macro_rules! low_bit {
-    ($idx: expr) => {
-        ($idx & (!$idx + 1))
+    ($index: expr) => {
+        ($index & (!$index + 1))
     };
 }
 
@@ -16,9 +16,6 @@ pub struct BinaryIndexedTree<N>
 where
     N: Numeric + NumericOps + NumericAssOps + Clone + Copy,
 {
-    // TODO: Use Box<[N]> instead of Vec<N> to reduce memory usage.
-    // However, some boxed slices functions are still in nightly.
-    // Consider using Vec<N> for now.
     body: Vec<N>,
 }
 
@@ -26,11 +23,18 @@ impl<N> BinaryIndexedTree<N>
 where
     N: Numeric + NumericOps + NumericAssOps + Clone + Copy,
 {
-    /// Constructs a new binary indexed tree with the specified `len` with each element set as N::ZERO.
-    pub fn with_capacity(capacity: usize) -> Self {
+    /// Constructs an empty binary indexed tree.
+    pub fn new() -> Self {
         Self {
-            body: vec![N::ZERO; capacity + 1],
+            body: vec![N::ZERO],
         }
+    }
+
+    /// Constructs an empty binary indexed tree with the specified `capacity`.
+    pub fn with_capacity(capacity: usize) -> Self {
+        let mut body = Vec::with_capacity(capacity + 1);
+        body.push(N::ZERO);
+        Self { body }
     }
 
     /// The length of the binary indexed tree.
@@ -38,22 +42,24 @@ where
         self.body.len() - 1
     }
 
-    /// Updates the value of the element at index `idx` by adding `delta`.
-    pub fn add(&mut self, mut idx: usize, delta: N) {
-        if !(1..=self.len()).contains(&idx) {
+    /// Updates the value of the element at `index` by adding `delta`.
+    /// Complexity: _O(log n)_.
+    pub fn add(&mut self, mut index: usize, delta: N) {
+        if !(1..=self.len()).contains(&index) {
             panic!(
                 "Index out of bounds: the range is 1..={} but the index is {}",
                 self.len(),
-                idx
+                index
             );
         }
-        while idx <= self.len() {
-            self.body[idx] += delta;
-            idx += low_bit!(idx);
+        while index <= self.len() {
+            self.body[index] += delta;
+            index += low_bit!(index);
         }
     }
 
     /// Returns the sum of the elements in the range `bounds`.
+    /// Complexity: _O(log n)_.
     pub fn sum(&self, bounds: impl RangeBounds<usize>) -> N {
         let mut start = match bounds.start_bound() {
             Bound::Included(&s) => s,
@@ -66,7 +72,7 @@ where
             Bound::Unbounded => self.len() + 1,
         };
 
-        if !(1..=self.len()).contains(&start) || !(1..=self.len() + 1).contains(&end) {
+        if !(1..=self.len() + 1).contains(&start) || !(1..=self.len() + 1).contains(&end) {
             panic!(
                 "Query out of bounds: the range is 1..={} but the query is {}..{}",
                 self.len(),
@@ -93,19 +99,29 @@ where
         s
     }
 
+    /// Pushes a new element into the binary indexed tree.
+    /// Complexity: _O(log n)_.
+    pub fn push(&mut self, value: N) {
+        let len = self.len() + 1;
+        let sum = self.sum(len - low_bit!(len) + 1..len);
+        self.body.push(value + sum);
+    }
+
+    /// Pops the last element from the binary indexed tree.
+    /// Complexity: _O(1)_.
+    pub fn pop(&mut self) -> Option<N> {
+        self.body.pop()
+    }
+
     // Initializes the binary indexed tree.
     fn init(&mut self) {
-        let len = self.len();
-        successors(Some(1), |&step| Some(step << 1))
-            .take_while(|&step| step << 1 <= len)
-            .for_each(|step: usize| {
-                successors(Some(step), |idx| Some(idx + (step << 1)))
-                    .take_while(|&idx| idx + step <= len)
-                    .for_each(|idx| {
-                        let t = self.body[idx];
-                        self.body[idx + step] += t;
-                    });
-            });
+        for i in 1..=self.len() {
+            let j = i + low_bit!(i);
+            if j <= self.len() {
+                let t = self.body[i];
+                self.body[j] += t;
+            }
+        }
     }
 }
 
@@ -149,6 +165,7 @@ mod tests {
         let v: Vec<isize>;
         fscanln!(reader, v; n);
         let mut bit = BinaryIndexedTree::from(v);
+        println!("{:?}", bit);
         let mut ans: Vec<_> = vec![];
         for _ in 0..m {
             let (op, x, y): (usize, usize, isize);

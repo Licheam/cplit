@@ -30,5 +30,7 @@
 
 pub mod data_structure;
 pub mod graph;
-mod io;
 pub mod num;
+
+#[macro_use]
+mod macros;
