@@ -1,4 +1,4 @@
-use super::Distance;
+use crate::graph::{Distance, Graph};
 use crate::num::{Numeric, NumericAssOps, NumericCmpOps, NumericOps};
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
@@ -11,11 +11,11 @@ use std::collections::BinaryHeap;
 ///     - `graph` - the graph with **positive** distance on edges
 /// - Output:
 ///     - A vector of optional distances from the source vertex to each vertex
-pub fn dijkstra<V, E, N>(source: usize, graph: &super::Graph<V, E>) -> Vec<Option<N>>
+pub fn dijkstra<V, E, N>(source: usize, graph: &Graph<V, E>) -> Vec<Option<N>>
 where
     N: Numeric + NumericOps + NumericCmpOps + NumericAssOps + Clone + Copy,
     V: Default + Clone,
-    E: Clone + Distance<N>,
+    E: Default + Clone + Distance<N>,
 {
     let n = graph.nodes.len() - 1;
     let mut dist = vec![None; n + 1];
@@ -28,12 +28,12 @@ where
             continue;
         }
         visited[u] = true;
-        for (v, e) in &graph.edges[u] {
+        graph.get_edges(u).for_each(|(v, e)| {
             if dist[*v].map_or(true, |distv| distv > dist[u].unwrap() + e.dist()) {
                 dist[*v] = Some(dist[u].unwrap() + e.dist());
                 pq.push((Reverse(dist[*v].unwrap()), *v));
             }
-        }
+        });
     }
     dist
 }
