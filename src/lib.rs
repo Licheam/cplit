@@ -28,6 +28,7 @@
 //! ```
 #![allow(clippy::needless_doctest_main)]
 
+pub mod general;
 pub mod data_structure;
 pub mod graph;
 pub mod num;
