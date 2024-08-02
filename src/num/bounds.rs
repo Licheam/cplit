@@ -12,6 +12,8 @@ pub trait UpperBounded {
 
 pub trait Bounded: LowerBounded + UpperBounded {}
 
+impl<T> Bounded for T where T: LowerBounded + UpperBounded {}
+
 macro_rules! bounded_trait_impl {
     ($t:ty, $min:expr, $max:expr) => {
         impl LowerBounded for $t {
