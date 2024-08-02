@@ -10,7 +10,7 @@ use std::marker::PhantomData;
 /// For more information, see [Segment tree](https://cp-algorithms.com/data_structures/segment_tree.html).
 ///
 /// The interface of the segment tree is a bit redundant for now, may fix it later.
-/// 
+///
 /// # Example 1
 /// ```no_run
 /// use cplit::data_structure::{SegmentTree, segment_tree::AddSum};
@@ -38,14 +38,14 @@ use std::marker::PhantomData;
 /// ```no_run
 /// use cplit::data_structure::{SegmentTree, segment_tree::{Operation, AddSum}};
 /// use cplit::scanln;
-/// 
+///
 /// #[derive(Debug)]
 /// struct AddMulSum {}
 ///
 /// impl AddMulSum {
 ///     const MOD_BASE: isize = 571373;
 /// }
-/// 
+///
 /// impl Operation<isize, (isize, isize)> for AddMulSum {
 ///     const COMBINE: fn(isize, isize) -> isize =
 ///         |left_val, right_val| (left_val + right_val) % Self::MOD_BASE;
