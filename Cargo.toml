@@ -1,6 +1,6 @@
 [package]
 name = "cplit"
-version = "0.2.3"
+version = "0.3.0"
 authors = ["Leachim"]
 keywords = ["competitive"]
 description = "Competitive Programming Library in Rust"

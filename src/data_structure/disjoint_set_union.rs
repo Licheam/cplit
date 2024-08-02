@@ -20,6 +20,11 @@ impl DisjointSetUnion {
         self.parent.len() - 1
     }
 
+    /// Returns `true` if the disjoint set union is empty.
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
     pub fn find(&mut self, x: usize) -> usize {
         if self.parent[x] == x {
             x
