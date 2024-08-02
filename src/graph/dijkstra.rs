@@ -11,6 +11,31 @@ use std::collections::BinaryHeap;
 ///     - `graph` - the graph with **positive** distance on edges
 /// - Output:
 ///     - A vector of optional distances from the source vertex to each vertex
+/// 
+/// # Examples
+///
+/// ```no_run
+/// use cplit::graph::{dijkstra, Graph};
+/// use cplit::scanln;
+///
+/// fn main() {
+///     let (n, m, s): (usize, usize, usize);
+///     // Read the number of nodes, the number of edges, and the source node.
+///     scanln!(n, m, s);
+///     // Create a graph with n nodes and storing nothing in each node,
+///     // and a usize in each edge as weight.
+///     let mut graph = Graph::<(), usize>::new(n);
+///     for _ in 0..m {
+///         // Read an edge u->v with weight w.
+///         let (u, v, w): (usize, usize, usize);
+///         scanln!(u, v, w);
+///         // Create an edge u->v with weight w.
+///         graph.add_edge(u, v, w);
+///     }
+///     let dist = dijkstra(s, &graph);
+///     println!("{:?}", dist);
+/// }
+/// ```
 pub fn dijkstra<V, E, N>(source: usize, graph: &Graph<V, E>) -> Vec<Option<N>>
 where
     N: Numeric + NumericOps + NumericCmpOps + NumericAssOps + Clone + Copy,
