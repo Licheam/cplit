@@ -1,6 +1,32 @@
 /// Disjoint Set Union, also known as Union-Find Set.
 ///
 /// For more information, see [Disjoint Set Union](https://cp-algorithms.com/data_structures/disjoint_set_union.html).
+///
+/// # Examples
+///
+/// ```no_run
+/// use cplit::data_structure::DisjointSetUnion;
+/// use cplit::scanln;
+///
+/// fn main() {
+///     let (n, m): (usize, usize);
+///     scanln!(n, m);
+///     let mut dsu = DisjointSetUnion::with_len(n);
+///     for _ in 0..m {
+///         let (op, x, y): (usize, usize, usize);
+///         scanln!(op, x, y);
+///         match op {
+///             1 => {
+///                 dsu.union(x, y);
+///             }
+///             2 => {
+///                 println!("{}", if dsu.find(x) == dsu.find(y) { 'Y' } else { 'N' });
+///             }
+///             _ => unreachable!(),
+///         }
+///     }
+/// }
+/// ```
 #[derive(Debug)]
 pub struct DisjointSetUnion {
     //TODO: Add rank to optimize the union operation. Add size maybe?
@@ -9,9 +35,9 @@ pub struct DisjointSetUnion {
 
 impl DisjointSetUnion {
     /// Constructs a new disjoint set union with the specified `len`.
-    pub fn with_capacity(capacity: usize) -> Self {
+    pub fn with_len(len: usize) -> Self {
         DisjointSetUnion {
-            parent: (0..=capacity).collect(),
+            parent: (0..=len).collect(),
         }
     }
 
@@ -40,6 +66,16 @@ impl DisjointSetUnion {
     }
 }
 
+impl<T> From<T> for DisjointSetUnion
+where
+    T: Into<Vec<usize>>,
+{
+    /// Constructs a new disjoint set union with the specified `parent`.
+    fn from(a: T) -> Self {
+        DisjointSetUnion { parent: a.into() }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::data_structure::DisjointSetUnion;
@@ -63,7 +99,7 @@ mod tests {
 
         let (n, m): (usize, usize);
         fscanln!(reader, n, m);
-        let mut dsu = DisjointSetUnion::with_capacity(n);
+        let mut dsu = DisjointSetUnion::with_len(n);
         let mut ans = String::new();
         for _ in 0..m {
             let (op, x, y): (usize, usize, usize);

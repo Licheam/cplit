@@ -11,6 +11,32 @@ macro_rules! low_bit {
 /// Binary indexed tree (Fenwick tree) for range sum queries and point updates.
 ///
 /// For more information, see [Fenwick tree](https://cp-algorithms.com/data_structures/fenwick.html).
+///
+/// # Examples
+/// ```no_run
+/// use cplit::data_structure::BinaryIndexedTree;
+/// use cplit::scanln;
+///
+/// fn main() {
+///     let (n, m): (usize, usize);
+///     scanln!(n, m);
+///     let v: Vec<isize>;
+///     scanln!(v; n);
+///     let mut bit = BinaryIndexedTree::from(v);
+///     for _ in 0..m {
+///         let (op, x, y): (usize, usize, isize);
+///         scanln!(op, x, y);
+///         match op {
+///             1 => {
+///                 bit.add(x, y);
+///             }
+///             2 => {
+///                 println!("{}", bit.sum(x..=y as usize));
+///             }
+///             _ => unreachable!(),
+///         }
+///     }
+/// }
 #[derive(Debug)]
 pub struct BinaryIndexedTree<N>
 where
@@ -179,7 +205,6 @@ mod tests {
         let v: Vec<isize>;
         fscanln!(reader, v; n);
         let mut bit = BinaryIndexedTree::from(v);
-        println!("{:?}", bit);
         let mut ans: Vec<_> = vec![];
         for _ in 0..m {
             let (op, x, y): (usize, usize, isize);

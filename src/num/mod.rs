@@ -21,7 +21,6 @@ pub trait NumericOps<Rhs = Self, Output = Self>:
     + Sub<Rhs, Output = Output>
     + Mul<Rhs, Output = Output>
     + Div<Rhs, Output = Output>
-    + Rem<Rhs, Output = Output>
 {
 }
 
@@ -30,7 +29,16 @@ impl<T, Rhs, Output> NumericOps<Rhs, Output> for T where
         + Sub<Rhs, Output = Output>
         + Mul<Rhs, Output = Output>
         + Div<Rhs, Output = Output>
-        + Rem<Rhs, Output = Output>
+{
+}
+
+pub trait IntegerOps<Rhs = Self, Output = Self>:
+    NumericOps<Rhs, Output> + Rem<Rhs, Output = Output>
+{
+}
+
+impl<T, Rhs, Output> IntegerOps<Rhs, Output> for T where
+    T: NumericOps<Rhs, Output> + Rem<Rhs, Output = Output>
 {
 }
 
@@ -38,14 +46,17 @@ impl<T, Rhs, Output> NumericOps<Rhs, Output> for T where
 ///
 /// This is automatically implemented for types which implement the operators.
 pub trait NumericAssOps<Rhs = Self>:
-    AddAssign<Rhs> + SubAssign<Rhs> + MulAssign<Rhs> + DivAssign<Rhs> + RemAssign<Rhs>
+    AddAssign<Rhs> + SubAssign<Rhs> + MulAssign<Rhs> + DivAssign<Rhs>
 {
 }
 
 impl<T, Rhs> NumericAssOps<Rhs> for T where
-    T: AddAssign<Rhs> + SubAssign<Rhs> + MulAssign<Rhs> + DivAssign<Rhs> + RemAssign<Rhs>
+    T: AddAssign<Rhs> + SubAssign<Rhs> + MulAssign<Rhs> + DivAssign<Rhs>
 {
 }
+
+pub trait IntegerAssOps<Rhs = Self>: NumericAssOps<Rhs> + RemAssign<Rhs> {}
+impl<T, Rhs> IntegerAssOps<Rhs> for T where T: NumericAssOps<Rhs> + RemAssign<Rhs> {}
 
 pub trait NumericCmpOps<Rhs = Self>: PartialEq<Rhs> + PartialOrd<Rhs> + Eq + Ord {}
 
