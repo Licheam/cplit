@@ -5,9 +5,82 @@ pub use self::ops::{AddSum, Operation, OperationPair};
 use std::fmt::Debug;
 use std::marker::PhantomData;
 
-/// Segment tree for range queries and point updates. (Quite early version, certain interfaces may be revised.)
+/// Segment tree for range queries and point updates.
 ///
 /// For more information, see [Segment tree](https://cp-algorithms.com/data_structures/segment_tree.html).
+///
+/// The interface of the segment tree is a bit redundant for now, may fix it later.
+/// 
+/// # Example 1
+/// ```no_run
+/// use cplit::data_structure::{SegmentTree, segment_tree::AddSum};
+/// use cplit::scanln;
+///
+/// fn main() {
+///     let (n, m): (usize, usize);
+///     scanln!(n, m);
+///     let v: Vec<isize>;
+///     scanln!(v; n);
+///     let mut st = SegmentTree::<isize, isize, AddSum>::from(v);
+///     let mut ans = String::new();
+///     for _ in 0..m {
+///         let (op, x, y, k): (usize, usize, usize, isize);
+///         scanln!(op, x, y, k, ?);
+///         match op {
+///             1 => st.modify(1, 1, n, x, y, k),
+///             2 => println!("{}", st.query(1, 1, n, x, y)),
+///             _ => unreachable!(),
+///         }
+///     }
+/// }
+/// ```
+/// # Example 2
+/// ```no_run
+/// use cplit::data_structure::{SegmentTree, segment_tree::{Operation, AddSum}};
+/// use cplit::scanln;
+/// 
+/// #[derive(Debug)]
+/// struct AddMulSum {}
+///
+/// impl AddMulSum {
+///     const MOD_BASE: isize = 571373;
+/// }
+/// 
+/// impl Operation<isize, (isize, isize)> for AddMulSum {
+///     const COMBINE: fn(isize, isize) -> isize =
+///         |left_val, right_val| (left_val + right_val) % Self::MOD_BASE;
+///     const PUSH_VAL: fn(isize, (isize, isize), usize) -> isize = |val, (add, mul), len| {
+///         (val * mul % Self::MOD_BASE + add * len as isize % Self::MOD_BASE) % Self::MOD_BASE
+///     };
+///     const PUSH_TAG: fn((isize, isize), (isize, isize)) -> (isize, isize) =
+///         |(child_add, child_mul), (add, mul)| {
+///             (
+///                 (child_add * mul % Self::MOD_BASE + add) % Self::MOD_BASE,
+///                 child_mul * mul % Self::MOD_BASE,
+///             )
+///         };
+///     const TAG_IDENTITY: (isize, isize) = (0, 1);
+///     const VAL_IDENTITY: isize = 0;
+/// }
+///
+/// fn main() {
+///     let (n, m): (usize, usize);
+///     scanln!(n, m);
+///     let v: Vec<isize>;
+///     scanln!(v; n);
+///     let mut st = SegmentTree::<_, _, AddMulSum>::from(v);
+///     for _ in 0..m {
+///         let (op, x, y, k): (usize, usize, usize, isize);
+///         scanln!(op, x, y, k, ?);
+///         match op {
+///             1 => st.modify(1, 1, n, x, y, (0, k)), // mul
+///             2 => st.modify(1, 1, n, x, y, (k, 1)), // add
+///             3 => println!("{}", st.query(1, 1, n, x, y)),
+///             _ => unreachable!(),
+///         }
+///     }
+/// }
+/// ```
 #[derive(Debug)]
 pub struct SegmentTree<V, T, O>
 where
@@ -189,7 +262,7 @@ mod tests {
 
         let mut reader = BufReader::new(Cursor::new(
             r#"
-5 5 38
+5 5
 1 5 4 2 3
 2 1 4 1
 3 2 5
