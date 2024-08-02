@@ -1,6 +1,7 @@
 use crate::num::{Bounded, Numeric, NumericCmpOps, NumericOps};
 use std::ops::{Bound, RangeBounds};
 
+/// Finds the smallest number `x` in the specified `bounds` such that `f(x) == true`.
 pub fn binary_search<N>(bounds: impl RangeBounds<N>, f: impl Fn(N) -> bool) -> N
 where
     N: Numeric + NumericOps + NumericCmpOps + Copy + Clone + Bounded,
