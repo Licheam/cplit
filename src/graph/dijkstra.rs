@@ -11,7 +11,7 @@ use std::collections::BinaryHeap;
 ///     - `graph` - the graph with **positive** distance on edges
 /// - Output:
 ///     - A vector of optional distances from the source vertex to each vertex
-/// 
+///
 /// # Examples
 ///
 /// ```no_run
