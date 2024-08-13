@@ -77,7 +77,7 @@ mod tests {
             graph.sort_edges(i);
         }
 
-        let mut ans = hierholzer(&graph);
+        let ans = hierholzer(&graph);
         assert_eq!(ans, Some(vec![1, 2, 1, 3, 3, 4, 2]));
     }
 }
