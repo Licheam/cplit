@@ -1,5 +1,7 @@
 use crate::num::Numeric;
-// Distance trait for graph algorithms, which is used to calculate the distance defined by the edge.
+/// Distance trait for graph algorithms,
+/// which is used to calculate the distance
+/// defined on the edge.
 pub trait Distance<N>
 where
     N: Numeric + Copy,
