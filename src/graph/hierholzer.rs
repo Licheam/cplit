@@ -37,13 +37,14 @@ where
         }
     }
     let mut cur = graph.head.clone();
-    let mut res = dfs(if s != 0 { s } else { 1 }, graph, &mut cur);
+    let mut res: Vec<_> = dfs(if s != 0 { s } else { 1 }, graph, &mut cur)
+        .into_iter()
+        .collect();
     if res.len() != graph.edges.len() {
         return None;
     }
-    let mut res_vec: Vec<usize> = res.into_iter().collect();
-    res_vec.reverse();
-    Some(res_vec)
+    res.reverse();
+    Some(res)
 }
 
 #[cfg(test)]
