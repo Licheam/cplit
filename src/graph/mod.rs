@@ -148,7 +148,7 @@ where
         &'a self,
         cur: &'a mut usize,
     ) -> impl Iterator<Item = (usize, &E)> + 'a {
-        std::iter::from_fn(|| {
+        std::iter::from_fn(move || {
             if *cur == 0 {
                 return None;
             }
