@@ -53,10 +53,10 @@ where
             continue;
         }
         visited[u] = true;
-        graph.get_edges(u).for_each(|(v, e)| {
-            if dist[*v].map_or(true, |distv| distv > dist[u].unwrap() + e.dist()) {
-                dist[*v] = Some(dist[u].unwrap() + e.dist());
-                pq.push((Reverse(dist[*v].unwrap()), *v));
+        graph.get_edges(u).for_each(|(&v, e)| {
+            if dist[v].map_or(true, |distv| distv > dist[u].unwrap() + e.dist()) {
+                dist[v] = Some(dist[u].unwrap() + e.dist());
+                pq.push((Reverse(dist[v].unwrap()), v));
             }
         });
     }
