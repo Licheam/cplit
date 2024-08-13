@@ -1,19 +1,21 @@
+use std::collections::LinkedList;
+
 use crate::graph::{Degree, Graph};
 
-fn dfs<V, E>(node: usize, graph: &Graph<V, E>, cur: &mut Vec<usize>) -> Vec<usize>
+fn dfs<V, E>(node: usize, graph: &Graph<V, E>, cur: &mut Vec<usize>) -> LinkedList<usize>
 where
     V: Default + Clone + Degree,
     E: Default + Clone,
 {
-    let mut res = vec![];
+    let mut res = LinkedList::new();
 
     while cur[node] != 0 {
         let (next, v, _) = graph.edges[cur[node]];
         cur[node] = next;
-        res.extend(dfs(v, graph, cur));
+        res.append(&mut dfs(v, graph, cur));
     }
 
-    res.push(node);
+    res.push_back(node);
     res
 }
 
@@ -35,7 +37,9 @@ where
         }
     }
     let mut cur = graph.head.clone();
-    let mut res = dfs(if s != 0 { s } else { 1 }, graph, &mut cur);
+    let mut res: Vec<_> = dfs(if s != 0 { s } else { 1 }, graph, &mut cur)
+        .into_iter()
+        .collect();
     if res.len() != graph.edges.len() {
         return None;
     }
