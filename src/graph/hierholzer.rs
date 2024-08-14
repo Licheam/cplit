@@ -8,7 +8,7 @@ where
     E: Default + Clone,
 {
     let mut res = LinkedList::new();
-    
+
     while cur[node] != 0 {
         let (next, v, _) = graph.edges[cur[node]];
         cur[node] = next;
@@ -19,18 +19,15 @@ where
     res
 }
 
-pub fn hierholzer<V, E>(start: usize, graph: &Graph<V, E>) -> Option<Vec<usize>>
+pub fn hierholzer<V, E>(start: usize, graph: &Graph<V, E>) -> Vec<usize>
 where
     V: Default + Clone,
     E: Default + Clone,
 {
     let mut cur = graph.head.clone();
     let mut res: Vec<_> = dfs(start, graph, &mut cur).into_iter().collect();
-    if res.len() != graph.edges.len() {
-        return None;
-    }
     res.reverse();
-    Some(res)
+    res
 }
 
 #[cfg(test)]
@@ -80,6 +77,6 @@ mod tests {
         }
 
         let ans = hierholzer(start, &graph);
-        assert_eq!(ans, Some(vec![1, 2, 1, 3, 3, 4, 2]));
+        assert_eq!(ans, vec![1, 2, 1, 3, 3, 4, 2]);
     }
 }
