@@ -1,10 +1,10 @@
 use std::collections::LinkedList;
 
-use crate::graph::{Degree, Graph};
+use crate::graph::Graph;
 
 fn dfs<V, E>(node: usize, graph: &Graph<V, E>, cur: &mut Vec<usize>) -> LinkedList<usize>
 where
-    V: Default + Clone + Degree,
+    V: Default + Clone,
     E: Default + Clone,
 {
     let mut res = LinkedList::new();
@@ -19,38 +19,21 @@ where
     res
 }
 
-pub fn hierholzer<V, E>(graph: &Graph<V, E>) -> Option<Vec<usize>>
+pub fn hierholzer<V, E>(start: usize, graph: &Graph<V, E>) -> Vec<usize>
 where
-    V: Default + Clone + Degree,
+    V: Default + Clone,
     E: Default + Clone,
 {
-    let n = graph.nodes.len() - 1;
-    let mut s = 0;
-    for i in 1..=n {
-        if graph.nodes[i].out_dgr() > graph.nodes[i].in_dgr() + 1 {
-            return None;
-        } else if graph.nodes[i].out_dgr() > graph.nodes[i].in_dgr() {
-            if s != 0 {
-                return None;
-            }
-            s = i;
-        }
-    }
     let mut cur = graph.head.clone();
-    let mut res: Vec<_> = dfs(if s != 0 { s } else { 1 }, graph, &mut cur)
-        .into_iter()
-        .collect();
-    if res.len() != graph.edges.len() {
-        return None;
-    }
+    let mut res: Vec<_> = dfs(start, graph, &mut cur).into_iter().collect();
     res.reverse();
-    Some(res)
+    res
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::graph::Graph;
-    use crate::{fscanln, graph::hierholzer};
+    use crate::fscanln;
+    use crate::graph::{hierholzer, Degree, Graph};
     use std::io::{BufReader, Cursor};
 
     #[test]
@@ -77,11 +60,23 @@ mod tests {
             graph.nodes[u].1 += 1;
         }
 
+        let mut start = 0;
+        for i in 1..=n {
+            if graph.nodes[i].out_dgr() > graph.nodes[i].in_dgr() + 1 {
+                assert!(false);
+            } else if graph.nodes[i].out_dgr() > graph.nodes[i].in_dgr() {
+                if start != 0 {
+                    assert!(false);
+                }
+                start = i;
+            }
+        }
+
         for i in 1..=n {
             graph.sort_edges(i);
         }
 
-        let ans = hierholzer(&graph);
-        assert_eq!(ans, Some(vec![1, 2, 1, 3, 3, 4, 2]));
+        let ans = hierholzer(start, &graph);
+        assert_eq!(ans, vec![1, 2, 1, 3, 3, 4, 2]);
     }
 }
