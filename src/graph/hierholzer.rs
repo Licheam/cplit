@@ -153,10 +153,12 @@ mod tests {
             graph.sort_edges(i);
         }
 
-        let mut start = 1;
+        let mut start = 0;
         for i in 1..=n {
-            if graph.nodes[i].dgr() % 2 != 0 {
+            if graph.nodes[i].dgr() != 0 && start == 0 {
                 start = i;
+            }
+            if graph.nodes[i].dgr() % 2 != 0 {
                 break;
             }
         }
