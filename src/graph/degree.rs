@@ -3,6 +3,7 @@
 pub trait Degree {
     fn in_dgr(&self) -> usize;
     fn out_dgr(&self) -> usize;
+    fn dgr(&self) -> usize;
 }
 
 impl Degree for usize {
@@ -11,6 +12,10 @@ impl Degree for usize {
     }
 
     fn out_dgr(&self) -> usize {
+        *self
+    }
+
+    fn dgr(&self) -> usize {
         *self
     }
 }
@@ -22,5 +27,9 @@ impl Degree for (usize, usize) {
 
     fn out_dgr(&self) -> usize {
         self.1
+    }
+
+    fn dgr(&self) -> usize {
+        self.0 + self.1
     }
 }

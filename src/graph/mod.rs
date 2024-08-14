@@ -5,6 +5,7 @@
 //! All graph algorithms are implemented for the following graph representation: [`Graph`],
 //! which is a simple graph representation using adjacency list.
 
+use std::cmp::max;
 use std::cmp::Ordering::{self, Less};
 /// Graph representation using adjacency list.
 ///
@@ -22,6 +23,9 @@ where
 
     /// The information stored in each edge.
     pub edges: Vec<(usize, usize, E)>,
+
+    /// The erased edges index.
+    erased: Vec<usize>,
 }
 
 impl<V, E> Graph<V, E>
@@ -29,12 +33,37 @@ where
     V: Default + Clone,
     E: Default + Clone,
 {
+    /// Create a new graph with `n` nodes.
     pub fn new(n: usize) -> Self {
         Self {
             nodes: vec![V::default(); n + 1],
             head: vec![0; n + 1],
             edges: vec![Default::default()],
+            erased: Vec::new(),
         }
+    }
+
+    pub fn empty() -> Self {
+        Self::new(0)
+    }
+
+    /// Get the number of nodes in the graph.
+    pub fn len_nodes(&self) -> usize {
+        self.nodes.len() - 1
+    }
+
+    /// Get the number of edges in the graph.
+    pub fn len_edges(&self) -> usize {
+        self.edges.len() - self.erased.len() - 1
+    }
+
+    /// Erase the edge with index `idx`.
+    pub fn erase_edge(&mut self, idx: &mut usize) {
+        if *idx == 0 {
+            return;
+        }
+        *idx = self.edges[*idx].0;
+        self.erased.push(*idx);
     }
 
     fn sort_edges_inner<F>(&mut self, edge: usize, len: usize, is_less: &mut F) -> usize
@@ -88,6 +117,12 @@ where
         head
     }
 
+    /// Sort the edges of a node by the node id.
+    pub fn sort_edges(&mut self, node: usize) {
+        self.sort_edges_by(node, |(a, _), (b, _)| a.cmp(b));
+    }
+
+    /// Sort the edges of a node by the given comparator.
     pub fn sort_edges_by<F>(&mut self, node: usize, mut compare: F)
     where
         F: FnMut(&(usize, &V), &(usize, &V)) -> Ordering,
@@ -97,13 +132,20 @@ where
             self.sort_edges_inner(self.head[node], len, &mut |a, b| compare(a, b) == Less);
     }
 
-    pub fn sort_edges(&mut self, node: usize) {
-        self.sort_edges_by(node, |(a, _), (b, _)| a.cmp(b));
-    }
-
-    pub fn add_edge(&mut self, from: usize, to: usize, edge: E) {
-        self.edges.push((self.head[from], to, edge));
-        self.head[from] = self.edges.len() - 1;
+    /// Add an undirected edge between `from` and `to` with information `info`.
+    pub fn add_edge(&mut self, from: usize, to: usize, info: E) {
+        if max(from, to) >= self.nodes.len() {
+            self.nodes.resize(max(from, to) + 1, V::default());
+            self.head.resize(max(from, to) + 1, 0);
+        }
+        if self.erased.is_empty() {
+            self.edges.push((self.head[from], to, info));
+            self.head[from] = self.edges.len() - 1;
+        } else {
+            let idx = self.erased.pop().unwrap();
+            self.edges[idx] = (self.head[from], to, info);
+            self.head[from] = idx;
+        }
     }
 
     fn get_edges_inner(&self, mut edge: usize) -> impl Iterator<Item = (&usize, &E)> {
@@ -159,7 +201,6 @@ where
     }
 
     /// Get the edge information of the edge with index `idx`.
-    #[deprecated(note = "Use graph.edges[idx] instead")]
     pub fn get_edge(&self, idx: usize) -> (usize, usize, &E) {
         let (next, to, edge_info) = &self.edges[idx];
         (*next, *to, edge_info)
@@ -167,13 +208,26 @@ where
 
     /// Get the twin edge information of the edge with index `idx`.
     /// Often used in undirected graphs as the reverse edge.
-    #[deprecated(note = "Use graph.edges[((idx - 1) ^ 1) + 1] instead")]
     pub fn get_twin_edge(&self, idx: usize) -> (usize, usize, &E) {
-        let (next, to, edge_info) = &self.edges[((idx - 1) ^ 1) + 1];
+        let (next, to, edge_info) = &self.edges[TWIN(idx)];
+        (*next, *to, edge_info)
+    }
+
+    /// Get the edge information of the edge with index `idx`.
+    pub fn get_edge_mut(&mut self, idx: usize) -> (usize, usize, &mut E) {
+        let (next, to, edge_info) = &mut self.edges[idx];
+        (*next, *to, edge_info)
+    }
+
+    /// Get the twin edge information of the edge with index `idx`.
+    /// Often used in undirected graphs as the reverse edge.
+    pub fn get_twin_edge_mut(&mut self, idx: usize) -> (usize, usize, &mut E) {
+        let (next, to, edge_info) = &mut self.edges[TWIN(idx)];
         (*next, *to, edge_info)
     }
 }
 
+pub const TWIN: fn(usize) -> usize = |idx| ((idx - 1) ^ 1) + 1;
 pub mod degree;
 pub mod dijkstra;
 pub mod distance;
@@ -182,7 +236,7 @@ pub mod hierholzer;
 #[doc(inline)]
 pub use self::dijkstra::dijkstra;
 #[doc(inline)]
-pub use self::hierholzer::hierholzer;
+pub use self::hierholzer::{hierholzer_directed, hierholzer_undirected};
 
 #[doc(inline)]
 pub use self::degree::Degree;
