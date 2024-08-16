@@ -24,8 +24,7 @@ where
             }
             is_prime[i * p] = false;
             if i % p == 0 {
-                let t = M::DERIVE_DIVIDES(p, i, &(|idx: usize| f[idx]));
-                f[i * p] = t;
+                f[i * p] = M::DERIVE_DIVIDES(p, i, &(|idx: usize| f[idx]));
                 break;
             }
             f[i * p] = M::DERIVE_COPRIME(p, i, &(|idx: usize| f[idx]));
