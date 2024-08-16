@@ -15,7 +15,7 @@ where
     for i in 2..=n {
         if is_prime[i] {
             primes.push(i);
-            f[i] = F::P(i);
+            f[i] = F::P(i, primes.len());
         }
         for &p in &primes {
             if i * p > n {
@@ -39,8 +39,9 @@ where
 pub trait MulFunc<T = usize> {
     /// The value of the multiplicative function at _1_.
     const ONE: T;
-    /// Given a prime number `p`, calculate the value of the multiplicative function at `p`.
-    const P: fn(p: usize) -> T;
+    /// Given the `index` th prime number `p`,
+    /// calculate the value of the multiplicative function at `p`.
+    const P: fn(p: usize, index: usize) -> T;
     /// Given a prime number `p`, a positive integer `x`,
     /// and a vector `f` of multiplicative function values,
     /// such that `p` divides `x` i.e. `p|x`,
@@ -57,14 +58,14 @@ pub struct EulerPhi;
 
 impl MulFunc for EulerPhi {
     const ONE: usize = 1;
-    const P: fn(usize) -> usize = |p| p - 1;
+    const P: fn(usize, usize) -> usize = |p, _| p - 1;
     const DERIVE_DIVIDES: fn(usize, usize, &Vec<usize>) -> usize = |p, x, f| f[x] * p;
     const DERIVE_COPRIME: fn(usize, usize, &Vec<usize>) -> usize = |p, x, f| f[x] * f[p];
 }
 
 impl MulFunc<()> for () {
     const ONE: () = ();
-    const P: fn(usize) -> () = |_| ();
+    const P: fn(usize, usize) -> () = |_, _| ();
     const DERIVE_DIVIDES: fn(usize, usize, &Vec<()>) -> () = |_, _, _| ();
     const DERIVE_COPRIME: fn(usize, usize, &Vec<()>) -> () = |_, _, _| ();
 }
