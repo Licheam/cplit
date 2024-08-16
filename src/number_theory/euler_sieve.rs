@@ -36,6 +36,9 @@ where
 /// For a multiplicative function `f`, it satisfies:
 /// - `f(1) = f.ONE`
 /// - `f(x\cdot y) = f(x) \cdot f(y)`.
+/// 
+/// Note that this trait is designed for the `euler_sieve` function.
+/// Some may not require the above properties.
 pub trait MulFunc<T = usize> {
     /// The value of the multiplicative function at _1_.
     const ONE: T;
