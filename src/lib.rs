@@ -30,8 +30,10 @@
 
 pub mod data_structure;
 pub mod general;
+pub mod geometry;
 pub mod graph;
 pub mod num;
+pub mod number_theory;
 pub mod utils;
 
 #[macro_use]
