@@ -12,6 +12,7 @@ where
     is_prime[0] = false;
     is_prime[1] = false;
     let mut f = vec![T::default(); n + 1];
+    f[1] = F::ONE;
     for i in 2..=n {
         if is_prime[i] {
             primes.push(i);
