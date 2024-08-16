@@ -32,6 +32,7 @@ pub mod data_structure;
 pub mod general;
 pub mod graph;
 pub mod geometry;
+pub mod number_theory;
 pub mod num;
 pub mod utils;
 
