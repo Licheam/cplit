@@ -47,12 +47,12 @@ pub trait MulFunc<T = usize> {
     /// calculate the value of the multiplicative function at `p`.
     const P: fn(p: usize, index: usize) -> T;
     /// Given a prime number `p`, a positive integer `x`,
-    /// and a vector `f` of multiplicative function values,
+    /// and a function `f` of multiplicative function values,
     /// such that `p` divides `x` i.e. `p|x`,
     /// calculate the value of the multiplicative function at `p \cdot x`.
     const DERIVE_DIVIDES: fn(p: usize, x: usize, f: &dyn Fn(usize) -> T) -> T;
     /// Given a prime number `p`, a positive integer `x`,
-    /// and a vector `f` of multiplicative function values,
+    /// and a function `f` of multiplicative function values,
     /// such that `p` is a prime and `p` does not divide `x` i.e. `p\not| x`,
     /// calculate the value of the multiplicative function at `p \cdot x`.
     const DERIVE_COPRIME: fn(p: usize, x: usize, f: &dyn Fn(usize) -> T) -> T;
