@@ -76,26 +76,26 @@ impl MulFunc<()> for () {
     const DERIVE_COPRIME: fn(usize, usize, &dyn Fn(usize) -> ()) -> () = |_, _, _| ();
 }
 
-// impl<T1, T2, F1, F2> MulFunc<(T1, T2)> for (F1, F2)
-// where
-//     F1: MulFunc<T1>,
-//     F2: MulFunc<T2>,
-// {
-//     const ONE: (T1, T2) = (F1::ONE, F2::ONE);
-//     const P: fn(usize, usize) -> (T1, T2) = |p, index| (F1::P(p, index), F2::P(p, index));
-//     const DERIVE_DIVIDES: fn(usize, usize, &Vec<(T1, T2)>) -> (T1, T2) = |p, x, f| {
-//         (
-//             F1::DERIVE_DIVIDES(p, x, &f.iter().map(|(a, _)| a).collect()),
-//             F2::DERIVE_DIVIDES(p, x, &f.iter().map(|(_, b)| b).collect()),
-//         )
-//     };
-//     const DERIVE_COPRIME: fn(usize, usize, &Vec<(T1, T2)>) -> (T1, T2) = |p, x, f| {
-//         (
-//             F1::DERIVE_COPRIME(p, x, &f.iter().map(|(a, _)| a).collect()),
-//             F2::DERIVE_COPRIME(p, x, &f.iter().map(|(_, b)| b).collect()),
-//         )
-//     };
-// }
+impl<T1, T2, F1, F2> MulFunc<(T1, T2)> for (F1, F2)
+where
+    F1: MulFunc<T1>,
+    F2: MulFunc<T2>,
+{
+    const ONE: (T1, T2) = (F1::ONE, F2::ONE);
+    const P: fn(usize, usize) -> (T1, T2) = |p, index| (F1::P(p, index), F2::P(p, index));
+    const DERIVE_DIVIDES: fn(usize, usize, &dyn Fn(usize) -> (T1, T2)) -> (T1, T2) = |p, x, f| {
+        (
+            F1::DERIVE_DIVIDES(p, x, &|idx| f(idx).0),
+            F2::DERIVE_DIVIDES(p, x, &|idx| f(idx).1),
+        )
+    };
+    const DERIVE_COPRIME: fn(usize, usize, &dyn Fn(usize) -> (T1, T2)) -> (T1, T2) = |p, x, f| {
+        (
+            F1::DERIVE_COPRIME(p, x, &|idx| f(idx).0),
+            F2::DERIVE_COPRIME(p, x, &|idx| f(idx).1),
+        )
+    };
+}
 
 #[cfg(test)]
 mod tests {
