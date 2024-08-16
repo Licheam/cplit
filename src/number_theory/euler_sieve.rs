@@ -1,3 +1,7 @@
+/// Given a positive integer `n`, calculate the prime numbers less than or equal to `n`
+/// in `O(n)` time complexity.
+///
+/// For more information, see [Linear Sieve](https://cp-algorithms.com/algebra/prime-sieve-linear.html)
 pub fn euler_sieve<T, F>(n: usize) -> (Vec<usize>, Vec<T>)
 where
     T: Default + Clone,
