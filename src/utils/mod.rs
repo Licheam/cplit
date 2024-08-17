@@ -95,4 +95,3 @@ impl Zero for F64 {
 impl One for F64 {
     const ONE: Self = F64(1.0_f64);
 }
-
