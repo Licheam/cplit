@@ -7,6 +7,7 @@
 
 use std::cmp::max;
 use std::cmp::Ordering::{self, Less};
+use std::iter::from_fn;
 /// Graph representation using adjacency list.
 ///
 /// `V` is the information stored in each node, and `E` is the information stored in each edge.
@@ -149,7 +150,7 @@ where
     }
 
     fn get_edges_inner(&self, mut edge: usize) -> impl Iterator<Item = (&usize, &E)> {
-        std::iter::from_fn(move || {
+        from_fn(move || {
             if edge == 0 {
                 return None;
             }
@@ -160,7 +161,7 @@ where
     }
 
     fn get_edges_enum_inner(&self, mut edge: usize) -> impl Iterator<Item = (usize, (&usize, &E))> {
-        std::iter::from_fn(move || {
+        from_fn(move || {
             if edge == 0 {
                 return None;
             }
@@ -183,20 +184,32 @@ where
         self.get_edges_enum_inner(self.head[node])
     }
 
-    #[deprecated(
-        note = "As `cur` is borrowed here, it can't be borrowed next. This design needs to be fixed."
-    )]
     pub fn get_edges_once<'a>(
         &'a self,
         cur: &'a mut usize,
-    ) -> impl Iterator<Item = (usize, &E)> + 'a {
-        std::iter::from_fn(move || {
+    ) -> impl Iterator<Item = (&usize, &E)> + 'a {
+        from_fn(move || {
             if *cur == 0 {
                 return None;
             }
             let (next, to, edge_info) = &self.edges[*cur];
             *cur = *next;
-            Some((*to, edge_info))
+            Some((to, edge_info))
+        })
+    }
+
+    pub fn get_edges_enum_once<'a>(
+        &'a self,
+        cur: &'a mut usize,
+    ) -> impl Iterator<Item = (usize, (&usize, &E))> + 'a {
+        from_fn(move || {
+            if *cur == 0 {
+                return None;
+            }
+            let (next, to, edge_info) = &self.edges[*cur];
+            let idx = *cur;
+            *cur = *next;
+            Some((idx, (to, edge_info)))
         })
     }
 
