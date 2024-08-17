@@ -76,7 +76,7 @@ where
         }
         let mut p1 = edge;
         let mut p2 = self
-            .get_edges_enum_inner(edge)
+            .get_edges_enum_from(edge)
             .skip(len / 2 - 1)
             .next()
             .unwrap()
