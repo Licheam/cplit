@@ -34,7 +34,7 @@ where
 
     unsafe {
         (*addr_of!(*graph))
-            .get_edges_enum_once(&mut *addr_of_mut!(cur[node]))
+            .get_edges_enum_from_once(&mut *addr_of_mut!(cur[node]))
             .for_each(|(idx, (v, _))| {
                 if !graph.edges[idx].2.get() {
                     graph.edges[idx].2.set(true);
