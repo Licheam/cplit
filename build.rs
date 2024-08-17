@@ -8,4 +8,13 @@ fn main() {
     );
 
     bundler.run();
+    
+    let mut bundler = Bundler::new(
+        "cplit",
+        "singlefile.rs.example",
+        "multiline.rs",
+        false,
+    );
+
+    bundler.run();
 }
