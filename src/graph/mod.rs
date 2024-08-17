@@ -76,7 +76,7 @@ where
         }
         let mut p1 = edge;
         let mut p2 = self
-            .get_edges_enum_inner(edge)
+            .get_edges_enum_from(edge)
             .skip(len / 2 - 1)
             .next()
             .unwrap()
@@ -149,7 +149,7 @@ where
         }
     }
 
-    fn get_edges_inner(&self, mut edge: usize) -> impl Iterator<Item = (&usize, &E)> {
+    fn get_edges_from(&self, mut edge: usize) -> impl Iterator<Item = (&usize, &E)> {
         from_fn(move || {
             if edge == 0 {
                 return None;
@@ -160,7 +160,7 @@ where
         })
     }
 
-    fn get_edges_enum_inner(&self, mut edge: usize) -> impl Iterator<Item = (usize, (&usize, &E))> {
+    fn get_edges_enum_from(&self, mut edge: usize) -> impl Iterator<Item = (usize, (&usize, &E))> {
         from_fn(move || {
             if edge == 0 {
                 return None;
@@ -175,16 +175,19 @@ where
     /// Returns an iterator over the edges of a node.
     /// The iterator returns the destination node, and the information stored in the edge.
     pub fn get_edges(&self, node: usize) -> impl Iterator<Item = (&usize, &E)> {
-        self.get_edges_inner(self.head[node])
+        self.get_edges_from(self.head[node])
     }
 
     /// Returns an iterator over the edges of a node.
     /// The iterator returns the index of the edge, the destination node, and the information stored in the edge.
     pub fn get_edges_enum(&self, node: usize) -> impl Iterator<Item = (usize, (&usize, &E))> {
-        self.get_edges_enum_inner(self.head[node])
+        self.get_edges_enum_from(self.head[node])
     }
 
-    pub fn get_edges_once<'a>(
+    /// Returns an iterator over the edges of a node.
+    /// The iterator returns the destination node, and the information stored in the edge.
+    /// This is used if you want to iterate edges only once.
+    pub fn get_edges_from_once<'a>(
         &'a self,
         cur: &'a mut usize,
     ) -> impl Iterator<Item = (&usize, &E)> + 'a {
@@ -198,7 +201,10 @@ where
         })
     }
 
-    pub fn get_edges_enum_once<'a>(
+    /// Returns an iterator over the edges of a node.
+    /// The iterator returns the index of the edge, the destination node, and the information stored in the edge.
+    /// This is used if you want to iterate edges only once.
+    pub fn get_edges_enum_from_once<'a>(
         &'a self,
         cur: &'a mut usize,
     ) -> impl Iterator<Item = (usize, (&usize, &E))> + 'a {
