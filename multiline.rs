@@ -301,7 +301,7 @@ pub mod cplit {
 			impl<V, T, O> SegmentTree<V, T, O>
 			where
 			    V: Clone + Copy,
-			    T: Clone + Copy,
+			    T: Clone + Copy + PartialEq,
 			    O: Operation<V, T>,
 			{
 			    pub fn len(&self) -> usize {
@@ -348,18 +348,15 @@ pub mod cplit {
 			        } else {
 			            self.pushdown(x, l, r);
 			            let m = (l + r) >> 1;
-			            O::COMBINE(
-			                if ql <= m {
-			                    self.query(x << 1, l, m, ql, qr)
-			                } else {
-			                    O::VAL_IDENTITY
-			                },
-			                if m < qr {
-			                    self.query(x << 1 | 1, m + 1, r, ql, qr)
-			                } else {
-			                    O::VAL_IDENTITY
-			                },
-			            )
+			            match (ql <= m, m < qr) {
+			                (true, true) => O::COMBINE(
+			                    self.query(x << 1, l, m, ql, qr),
+			                    self.query(x << 1 | 1, m + 1, r, ql, qr),
+			                ),
+			                (true, false) => self.query(x << 1, l, m, ql, qr),
+			                (false, true) => self.query(x << 1 | 1, m + 1, r, ql, qr),
+			                (false, false) => unreachable!(),
+			            }
 			        }
 			    }
 			
@@ -378,7 +375,7 @@ pub mod cplit {
 			impl<V, T, O, Q> From<Q> for SegmentTree<V, T, O>
 			where
 			    V: Clone + Copy,
-			    T: Clone + Copy,
+			    T: Clone + Copy + PartialEq,
 			    O: Operation<V, T>,
 			    Q: Into<Vec<V>>,
 			{
@@ -771,7 +768,7 @@ pub mod cplit {
 		        }
 		    }
 		
-		    fn get_edges_from(&self, mut edge: usize) -> impl Iterator<Item = (&usize, &E)> {
+		    pub fn get_edges_from(&self, mut edge: usize) -> impl Iterator<Item = (&usize, &E)> {
 		        from_fn(move || {
 		            if edge == 0 {
 		                return None;
@@ -782,7 +779,10 @@ pub mod cplit {
 		        })
 		    }
 		
-		    fn get_edges_enum_from(&self, mut edge: usize) -> impl Iterator<Item = (usize, (&usize, &E))> {
+		    pub fn get_edges_enum_from(
+		        &self,
+		        mut edge: usize,
+		    ) -> impl Iterator<Item = (usize, (&usize, &E))> {
 		        from_fn(move || {
 		            if edge == 0 {
 		                return None;
