@@ -1,4 +1,5 @@
 use std::collections::LinkedList;
+use std::ptr::{addr_of, addr_of_mut};
 
 use crate::graph::{Graph, TWIN};
 use crate::utils::Flag;
@@ -31,16 +32,14 @@ where
 {
     let mut res = LinkedList::new();
 
-    while cur[node] != 0 {
-        let (next, v, _) = graph.edges[cur[node]];
-        let idx = cur[node];
-        cur[node] = next;
-        if !graph.edges[idx].2.get() {
-            graph.edges[idx].2.set(true);
-            graph.edges[TWIN(idx)].2.set(true);
-            res.append(&mut dfs_undirected(v, graph, cur));
-        }
-    }
+    unsafe { (*addr_of!(*graph)).get_edges_enum_from_once(&mut *addr_of_mut!(cur[node])) }
+        .for_each(|(idx, (&v, _))| {
+            if !graph.edges[idx].2.get() {
+                graph.edges[idx].2.set(true);
+                graph.edges[TWIN(idx)].2.set(true);
+                res.append(&mut dfs_undirected(v, graph, cur));
+            }
+        });
 
     res.push_back(node);
     res
@@ -103,10 +102,10 @@ mod tests {
         let mut start = 0;
         for i in 1..=n {
             if graph.nodes[i].out_dgr() > graph.nodes[i].in_dgr() + 1 {
-                assert!(false);
+                unreachable!();
             } else if graph.nodes[i].out_dgr() > graph.nodes[i].in_dgr() {
                 if start != 0 {
-                    assert!(false);
+                    unreachable!();
                 }
                 start = i;
             }

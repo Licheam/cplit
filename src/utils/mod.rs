@@ -95,14 +95,3 @@ impl Zero for F64 {
 impl One for F64 {
     const ONE: Self = F64(1.0_f64);
 }
-
-#[cfg(test)]
-mod tests {
-    use crate::utils::F64;
-
-    #[test]
-    fn test() {
-        let f = F64(1.0);
-        let g = f + f;
-    }
-}

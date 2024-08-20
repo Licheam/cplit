@@ -24,8 +24,7 @@ where
             }
             is_prime[i * p] = false;
             if i % p == 0 {
-                let t = M::DERIVE_DIVIDES(p, i, &(|idx: usize| f[idx]));
-                f[i * p] = t;
+                f[i * p] = M::DERIVE_DIVIDES(p, i, &(|idx: usize| f[idx]));
                 break;
             }
             f[i * p] = M::DERIVE_COPRIME(p, i, &(|idx: usize| f[idx]));
@@ -48,12 +47,12 @@ pub trait MulFunc<T = usize> {
     /// calculate the value of the multiplicative function at `p`.
     const P: fn(p: usize, index: usize) -> T;
     /// Given a prime number `p`, a positive integer `x`,
-    /// and a vector `f` of multiplicative function values,
+    /// and a function `f` of multiplicative function values,
     /// such that `p` divides `x` i.e. `p|x`,
     /// calculate the value of the multiplicative function at `p \cdot x`.
     const DERIVE_DIVIDES: fn(p: usize, x: usize, f: &dyn Fn(usize) -> T) -> T;
     /// Given a prime number `p`, a positive integer `x`,
-    /// and a vector `f` of multiplicative function values,
+    /// and a function `f` of multiplicative function values,
     /// such that `p` is a prime and `p` does not divide `x` i.e. `p\not| x`,
     /// calculate the value of the multiplicative function at `p \cdot x`.
     const DERIVE_COPRIME: fn(p: usize, x: usize, f: &dyn Fn(usize) -> T) -> T;
@@ -71,9 +70,9 @@ impl MulFunc for EulerPhi {
 
 impl MulFunc<()> for () {
     const ONE: () = ();
-    const P: fn(usize, usize) -> () = |_, _| ();
-    const DERIVE_DIVIDES: fn(usize, usize, &dyn Fn(usize) -> ()) -> () = |_, _, _| ();
-    const DERIVE_COPRIME: fn(usize, usize, &dyn Fn(usize) -> ()) -> () = |_, _, _| ();
+    const P: fn(usize, usize) = |_, _| ();
+    const DERIVE_DIVIDES: fn(usize, usize, &dyn Fn(usize)) = |_, _, _| ();
+    const DERIVE_COPRIME: fn(usize, usize, &dyn Fn(usize)) = |_, _, _| ();
 }
 
 impl<T1, T2, F1, F2> MulFunc<(T1, T2)> for (F1, F2)

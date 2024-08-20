@@ -7,6 +7,7 @@
 
 use std::cmp::max;
 use std::cmp::Ordering::{self, Less};
+use std::iter::from_fn;
 /// Graph representation using adjacency list.
 ///
 /// `V` is the information stored in each node, and `E` is the information stored in each edge.
@@ -74,12 +75,7 @@ where
             return edge;
         }
         let mut p1 = edge;
-        let mut p2 = self
-            .get_edges_enum_inner(edge)
-            .skip(len / 2 - 1)
-            .next()
-            .unwrap()
-            .0;
+        let mut p2 = self.get_edges_enum_from(edge).nth(len / 2 - 1).unwrap().0;
         (self.edges[p2].0, p2) = (0, self.edges[p2].0);
 
         p1 = self.sort_edges_inner(p1, len / 2, is_less);
@@ -148,8 +144,8 @@ where
         }
     }
 
-    fn get_edges_inner(&self, mut edge: usize) -> impl Iterator<Item = (&usize, &E)> {
-        std::iter::from_fn(move || {
+    fn get_edges_from(&self, mut edge: usize) -> impl Iterator<Item = (&usize, &E)> {
+        from_fn(move || {
             if edge == 0 {
                 return None;
             }
@@ -159,8 +155,8 @@ where
         })
     }
 
-    fn get_edges_enum_inner(&self, mut edge: usize) -> impl Iterator<Item = (usize, (&usize, &E))> {
-        std::iter::from_fn(move || {
+    fn get_edges_enum_from(&self, mut edge: usize) -> impl Iterator<Item = (usize, (&usize, &E))> {
+        from_fn(move || {
             if edge == 0 {
                 return None;
             }
@@ -174,29 +170,47 @@ where
     /// Returns an iterator over the edges of a node.
     /// The iterator returns the destination node, and the information stored in the edge.
     pub fn get_edges(&self, node: usize) -> impl Iterator<Item = (&usize, &E)> {
-        self.get_edges_inner(self.head[node])
+        self.get_edges_from(self.head[node])
     }
 
     /// Returns an iterator over the edges of a node.
     /// The iterator returns the index of the edge, the destination node, and the information stored in the edge.
     pub fn get_edges_enum(&self, node: usize) -> impl Iterator<Item = (usize, (&usize, &E))> {
-        self.get_edges_enum_inner(self.head[node])
+        self.get_edges_enum_from(self.head[node])
     }
 
-    #[deprecated(
-        note = "As `cur` is borrowed here, it can't be borrowed next. This design needs to be fixed."
-    )]
-    pub fn get_edges_once<'a>(
+    /// Returns an iterator over the edges of a node.
+    /// The iterator returns the destination node, and the information stored in the edge.
+    /// This is used if you want to iterate edges only once.
+    pub fn get_edges_from_once<'a>(
         &'a self,
         cur: &'a mut usize,
-    ) -> impl Iterator<Item = (usize, &E)> + 'a {
-        std::iter::from_fn(move || {
+    ) -> impl Iterator<Item = (&usize, &E)> + 'a {
+        from_fn(move || {
             if *cur == 0 {
                 return None;
             }
             let (next, to, edge_info) = &self.edges[*cur];
             *cur = *next;
-            Some((*to, edge_info))
+            Some((to, edge_info))
+        })
+    }
+
+    /// Returns an iterator over the edges of a node.
+    /// The iterator returns the index of the edge, the destination node, and the information stored in the edge.
+    /// This is used if you want to iterate edges only once.
+    pub fn get_edges_enum_from_once<'a>(
+        &'a self,
+        cur: &'a mut usize,
+    ) -> impl Iterator<Item = (usize, (&usize, &E))> + 'a {
+        from_fn(move || {
+            if *cur == 0 {
+                return None;
+            }
+            let (next, to, edge_info) = &self.edges[*cur];
+            let idx = *cur;
+            *cur = *next;
+            Some((idx, (to, edge_info)))
         })
     }
 
