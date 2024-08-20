@@ -381,10 +381,10 @@ pub mod cplit {
 			{
 			    fn from(a: Q) -> Self {
 			        let v = a.into();
-			        let len = v.len();
+			        let len = v.len() - 1;
 			        let mut st = SegmentTree {
-			            val: vec![O::VAL_IDENTITY; 1 + (len << 2)],
-			            tag: vec![O::TAG_IDENTITY; 1 + (len << 2)],
+			            val: vec![O::VAL_IDENTITY; 10 + (len << 2)],
+			            tag: vec![O::TAG_IDENTITY; 10 + (len << 2)],
 			            len,
 			            phantom: PhantomData,
 			        };
