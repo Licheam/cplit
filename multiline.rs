@@ -407,7 +407,7 @@ pub mod cplit {
 	pub mod general {
 		
 		use crate::cplit::num::{Bounded, Numeric, NumericCmpOps, NumericOps};
-		use std::cmp::{Ord, Ordering};
+		use std::cmp::Ord;
 		use std::ops::{Bound, RangeBounds};
 		
 		pub fn binary_search<N>(bounds: impl RangeBounds<N>, f: impl Fn(N) -> bool) -> N
@@ -441,17 +441,14 @@ pub mod cplit {
 		where
 		    T: Ord,
 		{
-		    if arr.len() == 0 {
+		    if arr.is_empty() {
 		        return false;
 		    }
 		
 		    if let Some(i) = (0..arr.len() - 1).rev().find(|&i| arr[i] < arr[i + 1]) {
-		        (i + 1..arr.len())
-		            .rev()
-		            .find(|&j| arr[i] < arr[j])
-		            .map(|j| {
-		                arr.swap(i, j);
-		            });
+		        if let Some(j) = (i + 1..arr.len()).rev().find(|&j| arr[i] < arr[j]) {
+		            arr.swap(i, j);
+		        }
 		        arr[i + 1..].reverse();
 		        true
 		    } else {
@@ -708,12 +705,7 @@ pub mod cplit {
 		            return edge;
 		        }
 		        let mut p1 = edge;
-		        let mut p2 = self
-		            .get_edges_enum_from(edge)
-		            .skip(len / 2 - 1)
-		            .next()
-		            .unwrap()
-		            .0;
+		        let mut p2 = self.get_edges_enum_from(edge).nth(len / 2 - 1).unwrap().0;
 		        (self.edges[p2].0, p2) = (0, self.edges[p2].0);
 		
 		        p1 = self.sort_edges_inner(p1, len / 2, is_less);
@@ -1230,9 +1222,9 @@ pub mod cplit {
 			
 			impl MulFunc<()> for () {
 			    const ONE: () = ();
-			    const P: fn(usize, usize) -> () = |_, _| ();
-			    const DERIVE_DIVIDES: fn(usize, usize, &dyn Fn(usize) -> ()) -> () = |_, _, _| ();
-			    const DERIVE_COPRIME: fn(usize, usize, &dyn Fn(usize) -> ()) -> () = |_, _, _| ();
+			    const P: fn(usize, usize) = |_, _| ();
+			    const DERIVE_DIVIDES: fn(usize, usize, &dyn Fn(usize)) = |_, _, _| ();
+			    const DERIVE_COPRIME: fn(usize, usize, &dyn Fn(usize)) = |_, _, _| ();
 			}
 			
 			impl<T1, T2, F1, F2> MulFunc<(T1, T2)> for (F1, F2)
@@ -1363,7 +1355,7 @@ pub mod cplit {
 	#[macro_use]
 	mod macros {
 		#[macro_export]
-		macro_rules! fscanln {
+		macro_rules!  fscanln {
 		    ($reader:expr, $($i:expr), +) => {{
 		        #[allow(unused_imports)]
 		        use std::io::BufRead;
@@ -1380,7 +1372,7 @@ pub mod cplit {
 		        )*
 		    }};
 		
-		    ( $reader:expr, $($i:expr), +, ?) => {{
+		    ( $reader:expr, $($i:expr), +; ?) => {{
 		        #[allow(unused_imports)]
 		        use std::io::BufRead;
 		        let mut iter = std::iter::repeat_with(|| {
@@ -1437,8 +1429,8 @@ pub mod cplit {
 		        $crate::fscanln!(std::io::stdin(), $($i), +);
 		    };
 		
-		    ($($i:expr), +, ?) => {
-		        $crate::fscanln!(std::io::stdin(), $($i), +, ?);
+		    ($($i:expr), +; ?) => {
+		        $crate::fscanln!(std::io::stdin(), $($i), +; ?);
 		    };
 		
 		    ($coll:expr ; $n:expr) => {
