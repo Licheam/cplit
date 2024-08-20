@@ -144,7 +144,9 @@ where
         }
     }
 
-    fn get_edges_from(&self, mut edge: usize) -> impl Iterator<Item = (&usize, &E)> {
+    /// Returns an iterator over the edges from the edge with index `edge`.
+    /// The iterator returns the destination node, and the information stored in the edge.
+    pub fn get_edges_from(&self, mut edge: usize) -> impl Iterator<Item = (&usize, &E)> {
         from_fn(move || {
             if edge == 0 {
                 return None;
@@ -155,7 +157,12 @@ where
         })
     }
 
-    fn get_edges_enum_from(&self, mut edge: usize) -> impl Iterator<Item = (usize, (&usize, &E))> {
+    /// Returns an iterator over the edges from the edge with index `edge`.
+    /// The iterator returns the index of the edge, the destination node, and the information stored in the edge.
+    pub fn get_edges_enum_from(
+        &self,
+        mut edge: usize,
+    ) -> impl Iterator<Item = (usize, (&usize, &E))> {
         from_fn(move || {
             if edge == 0 {
                 return None;
