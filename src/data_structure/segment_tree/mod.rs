@@ -180,7 +180,7 @@ where
     /// Complexity: _O(n)_.
     fn from(a: Q) -> Self {
         let v = a.into();
-        let len = v.len() - 1;
+        let len = v.len();
         let mut st = SegmentTree {
             val: vec![O::VAL_IDENTITY; 1 + (len << 2)],
             tag: vec![O::TAG_IDENTITY; 1 + (len << 2)],
