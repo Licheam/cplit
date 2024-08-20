@@ -1,7 +1,7 @@
 //! General purpose algorithms.
 
 use crate::num::{Bounded, Numeric, NumericCmpOps, NumericOps};
-use std::cmp::{Ord, Ordering};
+use std::cmp::Ord;
 use std::ops::{Bound, RangeBounds};
 
 /// Finds the smallest number `x` in the specified `bounds` such that `f(x) == true`.
@@ -37,17 +37,14 @@ pub fn next_permutation<T>(arr: &mut [T]) -> bool
 where
     T: Ord,
 {
-    if arr.len() == 0 {
+    if arr.is_empty() {
         return false;
     }
 
     if let Some(i) = (0..arr.len() - 1).rev().find(|&i| arr[i] < arr[i + 1]) {
-        (i + 1..arr.len())
-            .rev()
-            .find(|&j| arr[i] < arr[j])
-            .map(|j| {
-                arr.swap(i, j);
-            });
+        if let Some(j) = (i + 1..arr.len()).rev().find(|&j| arr[i] < arr[j]) {
+            arr.swap(i, j);
+        }
         arr[i + 1..].reverse();
         true
     } else {

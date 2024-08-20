@@ -224,7 +224,7 @@ mod tests {
         let mut ans = String::new();
         for _ in 0..m {
             let (op, x, y, k): (usize, usize, usize, isize);
-            fscanln!(reader, op, x, y, k, ?);
+            fscanln!(reader, op, x, y, k; ?);
             match op {
                 1 => st.modify(1, 1, n, x, y, k),
                 2 => ans.push_str(&format!("{}\n", st.query(1, 1, n, x, y))),
@@ -280,7 +280,7 @@ mod tests {
         let mut ans = String::new();
         for _ in 0..m {
             let (op, x, y, k): (usize, usize, usize, isize);
-            fscanln!(reader, op, x, y, k, ?);
+            fscanln!(reader, op, x, y, k; ?);
             match op {
                 1 => st.modify(1, 1, n, x, y, (0, k)), // mul
                 2 => st.modify(1, 1, n, x, y, (k, 1)), // add

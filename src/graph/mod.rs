@@ -75,12 +75,7 @@ where
             return edge;
         }
         let mut p1 = edge;
-        let mut p2 = self
-            .get_edges_enum_from(edge)
-            .skip(len / 2 - 1)
-            .next()
-            .unwrap()
-            .0;
+        let mut p2 = self.get_edges_enum_from(edge).nth(len / 2 - 1).unwrap().0;
         (self.edges[p2].0, p2) = (0, self.edges[p2].0);
 
         p1 = self.sort_edges_inner(p1, len / 2, is_less);
