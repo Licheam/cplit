@@ -74,7 +74,7 @@ macro_rules! scanln {
     };
 
     ($($i:expr), +; ?) => {
-        $crate::fscanln!(std::io::stdin(), $($i), +, ?);
+        $crate::fscanln!(std::io::stdin(), $($i), +; ?);
     };
 
     ($coll:expr ; $n:expr) => {

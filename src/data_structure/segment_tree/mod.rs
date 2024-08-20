@@ -25,7 +25,7 @@ use std::marker::PhantomData;
 ///     let mut ans = String::new();
 ///     for _ in 0..m {
 ///         let (op, x, y, k): (usize, usize, usize, isize);
-///         scanln!(op, x, y, k, ?);
+///         scanln!(op, x, y, k; ?);
 ///         match op {
 ///             1 => st.modify(1, 1, n, x, y, k),
 ///             2 => println!("{}", st.query(1, 1, n, x, y)),
@@ -71,7 +71,7 @@ use std::marker::PhantomData;
 ///     let mut st = SegmentTree::<_, _, AddMulSum>::from(v);
 ///     for _ in 0..m {
 ///         let (op, x, y, k): (usize, usize, usize, isize);
-///         scanln!(op, x, y, k, ?);
+///         scanln!(op, x, y, k; ?);
 ///         match op {
 ///             1 => st.modify(1, 1, n, x, y, (0, k)), // mul
 ///             2 => st.modify(1, 1, n, x, y, (k, 1)), // add
