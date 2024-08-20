@@ -70,9 +70,9 @@ impl MulFunc for EulerPhi {
 
 impl MulFunc<()> for () {
     const ONE: () = ();
-    const P: fn(usize, usize) -> () = |_, _| ();
-    const DERIVE_DIVIDES: fn(usize, usize, &dyn Fn(usize) -> ()) -> () = |_, _, _| ();
-    const DERIVE_COPRIME: fn(usize, usize, &dyn Fn(usize) -> ()) -> () = |_, _, _| ();
+    const P: fn(usize, usize) = |_, _| ();
+    const DERIVE_DIVIDES: fn(usize, usize, &dyn Fn(usize)) = |_, _, _| ();
+    const DERIVE_COPRIME: fn(usize, usize, &dyn Fn(usize)) = |_, _, _| ();
 }
 
 impl<T1, T2, F1, F2> MulFunc<(T1, T2)> for (F1, F2)

@@ -1,5 +1,5 @@
 #[macro_export]
-macro_rules! fscanln {
+macro_rules!  fscanln {
     ($reader:expr, $($i:expr), +) => {{
         #[allow(unused_imports)]
         use std::io::BufRead;
@@ -16,7 +16,7 @@ macro_rules! fscanln {
         )*
     }};
 
-    ( $reader:expr, $($i:expr), +, ?) => {{
+    ( $reader:expr, $($i:expr), +; ?) => {{
         #[allow(unused_imports)]
         use std::io::BufRead;
         let mut iter = std::iter::repeat_with(|| {
@@ -73,8 +73,8 @@ macro_rules! scanln {
         $crate::fscanln!(std::io::stdin(), $($i), +);
     };
 
-    ($($i:expr), +, ?) => {
-        $crate::fscanln!(std::io::stdin(), $($i), +, ?);
+    ($($i:expr), +; ?) => {
+        $crate::fscanln!(std::io::stdin(), $($i), +; ?);
     };
 
     ($coll:expr ; $n:expr) => {

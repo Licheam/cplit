@@ -102,10 +102,10 @@ mod tests {
         let mut start = 0;
         for i in 1..=n {
             if graph.nodes[i].out_dgr() > graph.nodes[i].in_dgr() + 1 {
-                assert!(false);
+                unreachable!();
             } else if graph.nodes[i].out_dgr() > graph.nodes[i].in_dgr() {
                 if start != 0 {
-                    assert!(false);
+                    unreachable!();
                 }
                 start = i;
             }
