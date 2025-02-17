@@ -74,7 +74,7 @@ where
 #[cfg(test)]
 mod tests {
     use crate::fscanln;
-    use crate::graph::{Graph, scc};
+    use crate::graph::{scc, Graph};
     use std::collections::VecDeque;
     use std::io::{BufReader, Cursor};
 

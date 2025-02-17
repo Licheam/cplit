@@ -5,8 +5,8 @@
 //! All graph algorithms are implemented for the following graph representation: [`Graph`],
 //! which is a simple graph representation using adjacency list.
 
-use std::cmp::Ordering::{self, Less};
 use std::cmp::max;
+use std::cmp::Ordering::{self, Less};
 use std::iter::from_fn;
 /// Graph representation using adjacency list.
 ///
