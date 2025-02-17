@@ -6,7 +6,7 @@ keywords = ["competitive"]
 description = "Competitive Programming Library in Rust"
 license = "MIT"
 repository = "https://github.com/Licheam/cplit"
-edition = "2024"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
