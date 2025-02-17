@@ -1,12 +1,12 @@
 [package]
 name = "cplit"
-version = "0.4.1"
+version = "0.4.2"
 authors = ["Leachim"]
 keywords = ["competitive"]
 description = "Competitive Programming Library in Rust"
 license = "MIT"
 repository = "https://github.com/Licheam/cplit"
-edition = "2024"
+edition = "2021"
 
 build = "build.rs"
 
