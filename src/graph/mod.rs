@@ -44,6 +44,16 @@ where
         }
     }
 
+    /// Create a new graph from a given vector of nodes.
+    pub fn from_nodes(nodes: Vec<V>) -> Self {
+        Self {
+            head: vec![0; nodes.len()],
+            nodes,
+            edges: vec![Default::default()],
+            erased: Vec::new(),
+        }
+    }
+
     pub fn empty() -> Self {
         Self::new(0)
     }
@@ -144,7 +154,9 @@ where
         }
     }
 
-    fn get_edges_from(&self, mut edge: usize) -> impl Iterator<Item = (&usize, &E)> {
+    /// Returns an iterator over the edges from the edge with index `edge`.
+    /// The iterator returns the destination node, and the information stored in the edge.
+    pub fn get_edges_from(&self, mut edge: usize) -> impl Iterator<Item = (&usize, &E)> {
         from_fn(move || {
             if edge == 0 {
                 return None;
@@ -155,7 +167,12 @@ where
         })
     }
 
-    fn get_edges_enum_from(&self, mut edge: usize) -> impl Iterator<Item = (usize, (&usize, &E))> {
+    /// Returns an iterator over the edges from the edge with index `edge`.
+    /// The iterator returns the index of the edge, the destination node, and the information stored in the edge.
+    pub fn get_edges_enum_from(
+        &self,
+        mut edge: usize,
+    ) -> impl Iterator<Item = (usize, (&usize, &E))> {
         from_fn(move || {
             if edge == 0 {
                 return None;
@@ -246,11 +263,14 @@ pub mod degree;
 pub mod dijkstra;
 pub mod distance;
 pub mod hierholzer;
+pub mod scc;
 
 #[doc(inline)]
 pub use self::dijkstra::dijkstra;
 #[doc(inline)]
 pub use self::hierholzer::{hierholzer_directed, hierholzer_undirected};
+#[doc(inline)]
+pub use self::scc::scc;
 
 #[doc(inline)]
 pub use self::degree::Degree;

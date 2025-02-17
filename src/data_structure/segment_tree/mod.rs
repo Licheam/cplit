@@ -97,7 +97,7 @@ where
 impl<V, T, O> SegmentTree<V, T, O>
 where
     V: Clone + Copy,
-    T: Clone + Copy,
+    T: Clone + Copy + PartialEq,
     O: Operation<V, T>,
 {
     pub fn len(&self) -> usize {
@@ -144,18 +144,15 @@ where
         } else {
             self.pushdown(x, l, r);
             let m = (l + r) >> 1;
-            O::COMBINE(
-                if ql <= m {
-                    self.query(x << 1, l, m, ql, qr)
-                } else {
-                    O::VAL_IDENTITY
-                },
-                if m < qr {
-                    self.query(x << 1 | 1, m + 1, r, ql, qr)
-                } else {
-                    O::VAL_IDENTITY
-                },
-            )
+            match (ql <= m, m < qr) {
+                (true, true) => O::COMBINE(
+                    self.query(x << 1, l, m, ql, qr),
+                    self.query(x << 1 | 1, m + 1, r, ql, qr),
+                ),
+                (true, false) => self.query(x << 1, l, m, ql, qr),
+                (false, true) => self.query(x << 1 | 1, m + 1, r, ql, qr),
+                (false, false) => unreachable!(),
+            }
         }
     }
 
@@ -174,7 +171,7 @@ where
 impl<V, T, O, Q> From<Q> for SegmentTree<V, T, O>
 where
     V: Clone + Copy,
-    T: Clone + Copy,
+    T: Clone + Copy + PartialEq,
     O: Operation<V, T>,
     Q: Into<Vec<V>>,
 {
@@ -185,8 +182,8 @@ where
         let v = a.into();
         let len = v.len() - 1;
         let mut st = SegmentTree {
-            val: vec![O::VAL_IDENTITY; 1 + (len << 2)],
-            tag: vec![O::TAG_IDENTITY; 1 + (len << 2)],
+            val: vec![O::VAL_IDENTITY; 10 + (len << 2)],
+            tag: vec![O::TAG_IDENTITY; 10 + (len << 2)],
             len,
             phantom: PhantomData,
         };
