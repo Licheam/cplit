@@ -72,7 +72,7 @@ where
 #[cfg(test)]
 mod tests {
     use crate::fscanln;
-    use crate::graph::{hierholzer_directed, hierholzer_undirected, Degree, Graph};
+    use crate::graph::{Degree, Graph, hierholzer_directed, hierholzer_undirected};
     use std::io::{BufReader, Cursor};
 
     #[test]

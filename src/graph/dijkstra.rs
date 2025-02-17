@@ -66,7 +66,7 @@ where
 #[cfg(test)]
 mod tests {
     use crate::fscanln;
-    use crate::graph::{dijkstra, Graph};
+    use crate::graph::{Graph, dijkstra};
     use std::io::{BufReader, Cursor};
 
     #[test]

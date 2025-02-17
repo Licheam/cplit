@@ -194,8 +194,8 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::data_structure::segment_tree::{AddSum, Operation};
     use crate::data_structure::SegmentTree;
+    use crate::data_structure::segment_tree::{AddSum, Operation};
     use crate::fscanln;
     use std::io::{BufReader, Cursor};
 
