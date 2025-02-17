@@ -44,6 +44,16 @@ where
         }
     }
 
+    /// Create a new graph from a given vector of nodes.
+    pub fn from_nodes(nodes: Vec<V>) -> Self {
+        Self {
+            head: vec![0; nodes.len()],
+            nodes,
+            edges: vec![Default::default()],
+            erased: Vec::new(),
+        }
+    }
+
     pub fn empty() -> Self {
         Self::new(0)
     }
@@ -253,11 +263,14 @@ pub mod degree;
 pub mod dijkstra;
 pub mod distance;
 pub mod hierholzer;
+pub mod scc;
 
 #[doc(inline)]
 pub use self::dijkstra::dijkstra;
 #[doc(inline)]
 pub use self::hierholzer::{hierholzer_directed, hierholzer_undirected};
+#[doc(inline)]
+pub use self::scc::scc;
 
 #[doc(inline)]
 pub use self::degree::Degree;
