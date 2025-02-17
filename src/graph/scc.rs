@@ -74,7 +74,7 @@ where
 #[cfg(test)]
 mod tests {
     use crate::fscanln;
-    use crate::graph::{scc, Graph};
+    use crate::graph::{Graph, scc};
     use std::collections::VecDeque;
     use std::io::{BufReader, Cursor};
 
@@ -82,10 +82,28 @@ mod tests {
     fn luogu_p3387() {
         let mut reader = BufReader::new(Cursor::new(
             r#"
-2 2
-1 1
-1 2
-2 1
+10 20
+970 369 910 889 470 106 658 659 916 964 
+3 2
+3 6
+3 4
+9 5
+8 3
+5 8
+9 1
+9 7
+9 8
+7 5
+3 7
+7 8
+1 7
+10 2
+1 10
+4 8
+2 6
+3 1
+3 5
+8 5
 "#,
         ));
         let (n, m): (usize, usize);
@@ -99,22 +117,23 @@ mod tests {
             graph.add_edge(u, v, ());
         }
         let (sc, scc) = scc(&graph);
-        let mut in_dgr = vec![0; sc + 1];
+        let mut in_dgr: Vec<usize> = vec![0; sc + 1];
         let mut sum = vec![0; sc + 1];
         for u in 1..=n {
             sum[scc[u]] += graph.nodes[u];
-            graph.get_edges(u).for_each(|(&v, _)| {
-                if scc[u] != scc[v] {
+            graph
+                .get_edges(u)
+                .filter(|&(&v, _)| scc[u] != scc[v])
+                .for_each(|(&v, _)| {
                     in_dgr[scc[v]] += 1;
-                }
-            });
+                });
         }
         let mut dp = vec![0; sc + 1];
         let mut q = VecDeque::new();
         let mut vis = vec![false; n + 1];
-        for u in 1..=sc {
-            if in_dgr[u] == 0 && !vis[u] {
-                dp[u] = sum[u];
+        for u in 1..=n {
+            if in_dgr[scc[u]] == 0 && !vis[u] {
+                dp[scc[u]] = sum[scc[u]];
                 q.push_back(u);
                 while !q.is_empty() {
                     let u = q.pop_front().unwrap();
@@ -140,6 +159,6 @@ mod tests {
             }
         }
         let ans = dp.iter().max().unwrap();
-        assert_eq!(ans, &2);
+        assert_eq!(ans, &6911);
     }
 }
